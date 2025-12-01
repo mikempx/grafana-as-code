@@ -1,0 +1,3712 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 20,
+  "links": [],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 17,
+      "panels": [],
+      "title": "Panels controlled by a variable",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "eegjhugd9tfcwe"
+      },
+      "description": "This panel summarizes request duration and rates across all microservices. Check out the App Observability plugin for more details.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Duration (95th)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Rate"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Errors"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 13,
+        "x": 0,
+        "y": 1
+      },
+      "id": 18,
+      "links": [
+        {
+          "title": "More information",
+          "url": "/a/grafana-app-observability-app/"
+        }
+      ],
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true
+      },
+      "pluginVersion": "11.6.0-84846",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "eegjhugd9tfcwe"
+          },
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.95, sum(rate(tns_request_duration_seconds_bucket{job=~\"$service\"} [$__rate_interval])) by (job, le))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Duration"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "eegjhugd9tfcwe"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(tns_request_duration_seconds_count{job=~\"$service\"}[$__rate_interval])) by (job)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Rate"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "eegjhugd9tfcwe"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(tns_request_duration_seconds_count{job=~\"$service\", status_code=~\"4..|5..\"}[$__rate_interval])) by (job)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Errors"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "timeSeriesTable",
+          "options": {}
+        },
+        {
+          "disabled": true,
+          "id": "timeSeriesTable",
+          "options": {
+            "A": {
+              "timeField": "Time"
+            },
+            "Duration": {
+              "timeField": "Time"
+            },
+            "Errors": {
+              "stat": "sum",
+              "timeField": "Time"
+            },
+            "Rate": {
+              "timeField": "Time"
+            }
+          }
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "disabled": true,
+          "id": "joinByField",
+          "options": {
+            "byField": "job",
+            "mode": "outerTabular"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Trend #Errors": false
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Trend #Duration": 3,
+              "Trend #Errors": 2,
+              "Trend #Rate": 1,
+              "job": 0
+            },
+            "renameByName": {
+              "Trend #A": "Errors",
+              "Trend #Duration": "Duration (95th)",
+              "Trend #Errors": "Errors",
+              "Trend #Rate": "Rate",
+              "job": "Service"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "eegjhugd9tfcwe"
+      },
+      "description": "This panel summarizes request duration and rates across all microservices. Check out the App Observability plugin for more details.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 17,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 13,
+        "y": 1
+      },
+      "id": 22,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.0-84846",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "eegjhugd9tfcwe"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(tns_request_duration_seconds_count{job=~\"$service\",status_code=~\"$http_status\"}[$__rate_interval])) by (job,status_code)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{job}} - {{status_code}}",
+          "range": true,
+          "refId": "Rate"
+        }
+      ],
+      "title": "Microservices Request Rates by Service and Status Code",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "eegjhugd9tfcwe"
+      },
+      "description": "This panel summarizes request duration and rates across all microservices. Check out the App Observability plugin for more details.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 13,
+        "x": 0,
+        "y": 5
+      },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.0-84846",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "eegjhugd9tfcwe"
+          },
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.95, sum(rate(tns_client_request_duration_seconds_bucket{job=~\"$service\"} [$__rate_interval])) by (job, le))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Duration"
+        }
+      ],
+      "title": "Microservices Request Durations",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "eegjhugd9tfcwe"
+      },
+      "description": "This panel summarizes request duration and rates across all microservices. Check out the App Observability plugin for more details.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 17,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "tns-app"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 10
+      },
+      "id": 24,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.0-84846",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "eegjhugd9tfcwe"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(tns_request_duration_seconds_count{job=~\"$service\"}[$__rate_interval])) by (job)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Rate"
+        }
+      ],
+      "title": "Microservices Request Rates by Service",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "eegjhugd9tfcwe"
+      },
+      "description": "This panel summarizes request duration and rates across all microservices. Check out the App Observability plugin for more details.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 17,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "tns-app"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 10
+      },
+      "id": 23,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.6.0-84846",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "eegjhugd9tfcwe"
+          },
+          "editorMode": "code",
+          "expr": "sum(rate(tns_request_duration_seconds_count{job=~\"$service\", status_code=~\"4..|5..\"}[$__rate_interval])) by (job)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Errors"
+        }
+      ],
+      "title": "Microservices Error Rates",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "eegjhugd9tfcwe"
+      },
+      "description": "The panel displays a latency heatmap of requests, utilizing Prometheus data to visualize the sum increase in request duration per selected service. The heatmap format provides a distinct view of latency patterns over time.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 19,
+      "options": {
+        "calculate": false,
+        "cellGap": 1,
+        "color": {
+          "exponent": 0.5,
+          "fill": "dark-green",
+          "mode": "scheme",
+          "reverse": false,
+          "scale": "exponential",
+          "scheme": "Warm",
+          "steps": 128
+        },
+        "exemplars": {
+          "color": "rgba(255,0,255,0.7)"
+        },
+        "filterValues": {
+          "le": 1e-9
+        },
+        "legend": {
+          "show": true
+        },
+        "rowsFrame": {
+          "layout": "auto"
+        },
+        "tooltip": {
+          "mode": "single",
+          "showColorScale": false,
+          "yHistogram": false
+        },
+        "yAxis": {
+          "axisPlacement": "left",
+          "reverse": false,
+          "unit": "s"
+        }
+      },
+      "pluginVersion": "11.6.0-84846",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "eegjhugd9tfcwe"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum(increase(tns_client_request_duration_seconds_bucket{job=~\"$service\"}[$__rate_interval])) by (le)",
+          "format": "heatmap",
+          "instant": false,
+          "legendFormat": "{{le}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Request Latency Heatmap",
+      "transparent": true,
+      "type": "heatmap"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 9,
+      "panels": [],
+      "title": "Stat Panels and Time Series",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "bars",
+            "fillOpacity": 82,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "graph": false,
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "dash": [
+                10,
+                10
+              ],
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A-series"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B-series"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 2
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.showPoints",
+                "value": "always"
+              },
+              {
+                "id": "custom.pointSize",
+                "value": 7
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 3
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "dark-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 26
+      },
+      "id": 10,
+      "maxDataPoints": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "alias": "",
+          "csvWave": {
+            "timeStep": 60,
+            "valuesCSV": "0,0,2,2,1,1"
+          },
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "hide": false,
+          "lines": 10,
+          "noise": 1,
+          "points": [],
+          "pulseWave": {
+            "offCount": 3,
+            "offValue": 1,
+            "onCount": 3,
+            "onValue": 2,
+            "timeStep": 60
+          },
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "spread": 1,
+          "stream": {
+            "bands": 1,
+            "noise": 2.2,
+            "speed": 250,
+            "spread": 3.5,
+            "type": "signal"
+          },
+          "stringInput": "1,20,90,30,5,0"
+        },
+        {
+          "alias": "",
+          "csvWave": {
+            "timeStep": 60,
+            "valuesCSV": "0,0,2,2,1,1"
+          },
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "hide": false,
+          "lines": 10,
+          "points": [],
+          "pulseWave": {
+            "offCount": 3,
+            "offValue": 1,
+            "onCount": 3,
+            "onValue": 2,
+            "timeStep": 60
+          },
+          "refId": "B",
+          "scenarioId": "random_walk",
+          "stream": {
+            "bands": 1,
+            "noise": 2.2,
+            "speed": 250,
+            "spread": 3.5,
+            "type": "signal"
+          },
+          "stringInput": "1,20,90,30,5,0"
+        }
+      ],
+      "title": "Time Series - Bars with hue gradient",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 31,
+            "gradientMode": "hue",
+            "hideFrom": {
+              "graph": false,
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Requests/s"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Errors"
+            },
+            "properties": [
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    10,
+                    10
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillBelowTo",
+                "value": "Requests/s"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 26
+      },
+      "id": 11,
+      "maxDataPoints": 80,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "alias": "Requests/s",
+          "csvWave": {
+            "timeStep": 60,
+            "valuesCSV": "0,0,2,2,1,1"
+          },
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "lines": 10,
+          "points": [],
+          "pulseWave": {
+            "offCount": 3,
+            "offValue": 1,
+            "onCount": 3,
+            "onValue": 2,
+            "timeStep": 60
+          },
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "seriesCount": 1,
+          "stream": {
+            "bands": 1,
+            "noise": 2.2,
+            "speed": 250,
+            "spread": 3.5,
+            "type": "signal"
+          },
+          "stringInput": ""
+        },
+        {
+          "alias": "Errors",
+          "csvWave": {
+            "timeStep": 60,
+            "valuesCSV": "0,0,2,2,1,1"
+          },
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "hide": false,
+          "lines": 10,
+          "points": [],
+          "pulseWave": {
+            "offCount": 3,
+            "offValue": 1,
+            "onCount": 3,
+            "onValue": 2,
+            "timeStep": 60
+          },
+          "refId": "B",
+          "scenarioId": "random_walk",
+          "seriesCount": 1,
+          "stream": {
+            "bands": 1,
+            "noise": 2.2,
+            "speed": 250,
+            "spread": 3.5,
+            "type": "signal"
+          },
+          "stringInput": ""
+        }
+      ],
+      "title": "Interpolation mode: smooth",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 200,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              },
+              {
+                "color": "green",
+                "value": 25
+              },
+              {
+                "color": "purple",
+                "value": 50
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "areaM2"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 26
+      },
+      "id": 8,
+      "interval": "5m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "sparkline": {
+          "show": true
+        },
+        "text": {},
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "alias": "__server_names",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "max": 130,
+          "min": 40,
+          "noise": 10,
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "seriesCount": 15,
+          "spread": 100,
+          "startValue": 0
+        },
+        {
+          "alias": "__server_names",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "hide": false,
+          "max": 60,
+          "min": 1,
+          "noise": 15,
+          "refId": "B",
+          "scenarioId": "random_walk",
+          "seriesCount": 15,
+          "spread": 15,
+          "startValue": 0
+        }
+      ],
+      "title": "Stat panel - Value only",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              },
+              {
+                "color": "green",
+                "value": 10
+              },
+              {
+                "color": "purple",
+                "value": 20
+              },
+              {
+                "color": "orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "areaM2"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 13,
+        "x": 11,
+        "y": 35
+      },
+      "id": 6,
+      "interval": "7m",
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": true,
+        "sparkline": {
+          "show": true
+        },
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "alias": "__house_locations",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "max": 100,
+          "min": 1,
+          "noise": 10,
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "seriesCount": 6,
+          "spread": 20
+        }
+      ],
+      "title": "Stat Panel - Color value",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              },
+              {
+                "color": "green",
+                "value": 10
+              },
+              {
+                "color": "purple",
+                "value": 40
+              },
+              {
+                "color": "orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "areaM2"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 11,
+        "x": 0,
+        "y": 36
+      },
+      "id": 7,
+      "interval": "6m",
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": true,
+        "sparkline": {
+          "show": true
+        },
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "alias": "__house_locations",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "labels": "",
+          "max": 100,
+          "min": 1,
+          "noise": 50,
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "seriesCount": 6,
+          "spread": 20
+        }
+      ],
+      "title": "Stat Panel - Color background",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 43
+      },
+      "id": 12,
+      "panels": [],
+      "title": "Tables, Pie Charts, Bar Graphs",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "color-background"
+            },
+            "filterable": false,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "blue",
+                "value": 50
+              },
+              {
+                "color": "orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 70
+              }
+            ]
+          },
+          "unit": "degree"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Field"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Last"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 11,
+        "x": 0,
+        "y": 44
+      },
+      "id": 5,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Last"
+          }
+        ]
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "refId": "My",
+          "scenarioId": "random_walk",
+          "seriesCount": 10,
+          "stringInput": ""
+        }
+      ],
+      "title": "Table - Color backgrounds or value using thresholds or value mappings",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "labelsToFields": false,
+            "reducers": [
+              "max",
+              "mean",
+              "last"
+            ]
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "graph": false,
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "true",
+                "result": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "True"
+                }
+              },
+              "type": "special"
+            },
+            {
+              "options": {
+                "match": "false",
+                "result": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "False"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 13,
+        "x": 11,
+        "y": 44
+      },
+      "id": 2,
+      "maxDataPoints": 10,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "text": {},
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "alias": "SensorA",
+          "csvFileName": "js_libraries.csv",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "refId": "A",
+          "scenarioId": "csv_file"
+        }
+      ],
+      "title": "Bar Chart - Popular JS Frameworks",
+      "transparent": true,
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "decimals": 0,
+          "mappings": [],
+          "min": 3,
+          "unit": "currencyUSD"
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "GDP Per Capita",
+                  "United States"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 10,
+        "x": 1,
+        "y": 54
+      },
+      "id": 3,
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "allValues"
+          ],
+          "fields": "/^GDP Per Capita$/",
+          "values": true
+        },
+        "showLegend": true,
+        "strokeWidth": 1,
+        "text": {},
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "csvFileName": "gdp_per_capita.csv",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "refId": "A",
+          "scenarioId": "csv_file"
+        }
+      ],
+      "title": "Pie Chart - GDP per Capita, GDP > $50k",
+      "transformations": [
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "lowerOrEqual",
+                  "options": {
+                    "value": 49999
+                  }
+                },
+                "fieldName": "GDP Per Capita"
+              }
+            ],
+            "match": "all",
+            "type": "exclude"
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "index": 0
+              },
+              {
+                "color": "green",
+                "index": 1,
+                "value": 20
+              },
+              {
+                "color": "orange",
+                "index": 2,
+                "value": 40
+              },
+              {
+                "color": "red",
+                "index": 3,
+                "value": 80
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 13,
+        "x": 11,
+        "y": 54
+      },
+      "id": 4,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "alias": "Outhouse",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "refId": "A",
+          "scenarioId": "random_walk"
+        },
+        {
+          "alias": "Kitchen",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "refId": "B",
+          "scenarioId": "random_walk"
+        },
+        {
+          "alias": "Basement",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "refId": "C",
+          "scenarioId": "random_walk"
+        },
+        {
+          "alias": "Garage",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "refId": "D",
+          "scenarioId": "random_walk"
+        },
+        {
+          "alias": "Family Room",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "hide": false,
+          "refId": "E",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "Bar Gauge - Gradient mode",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "CRITICAL": {
+                  "color": "red",
+                  "index": 3
+                },
+                "HIGH": {
+                  "color": "orange",
+                  "index": 2
+                },
+                "LOW": {
+                  "color": "blue",
+                  "index": 0
+                },
+                "NORMAL": {
+                  "color": "green",
+                  "index": 1
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 66
+      },
+      "id": 1,
+      "options": {
+        "alignValue": "center",
+        "colWidth": 0.9,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": false
+        },
+        "mergeValues": true,
+        "mode": "changes",
+        "rowHeight": 0.97,
+        "showValue": "always",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "alias": "Level A",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "refId": "A",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "LOW,HIGH,NORMAL,NORMAL,NORMAL,LOW,LOW,NORMAL,HIGH,CRITICAL"
+        },
+        {
+          "alias": "Level B",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "hide": false,
+          "refId": "B",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "NORMAL,LOW,LOW,CRITICAL,CRITICAL,LOW,LOW,NORMAL,HIGH,CRITICAL"
+        },
+        {
+          "alias": "Level C",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "hide": false,
+          "refId": "C",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "NORMAL,NORMAL,NORMAL,NORMAL,CRITICAL,LOW,NORMAL,NORMAL,NORMAL,LOW"
+        }
+      ],
+      "title": "State timeline",
+      "transparent": true,
+      "type": "state-timeline"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 73
+      },
+      "id": 13,
+      "panels": [],
+      "title": "Other Supporting Details",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "green",
+                  "index": 0
+                },
+                "to": 2
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 0,
+                "result": {
+                  "color": "red",
+                  "index": 1
+                },
+                "to": 1
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange"
+              },
+              {
+                "color": "green",
+                "value": 30
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 23,
+        "x": 0,
+        "y": 74
+      },
+      "id": 16,
+      "options": {
+        "infinitePan": false,
+        "inlineEditing": true,
+        "panZoom": false,
+        "root": {
+          "background": {
+            "color": {
+              "fixed": "transparent"
+            },
+            "image": {
+              "fixed": "https://dl.grafana.com/files/temp/ryan/landscape_2x.jpg"
+            },
+            "size": "original"
+          },
+          "border": {
+            "color": {
+              "fixed": "dark-green"
+            }
+          },
+          "constraint": {
+            "horizontal": "left",
+            "vertical": "top"
+          },
+          "elements": [
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "rpm": {
+                  "field": "w3_rpm"
+                }
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Windmill 3",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 179,
+                "left": 15,
+                "top": 234,
+                "width": 190
+              },
+              "type": "windTurbine"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "rpm": {
+                  "field": "w4_rpm"
+                }
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Windmill 4",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 104,
+                "left": 199,
+                "top": 257,
+                "width": 167
+              },
+              "type": "windTurbine"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "rpm": {
+                  "field": "w1_rpm"
+                }
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Windmill 1",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 382.998046875,
+                "left": 438,
+                "top": 77,
+                "width": 298.994140625
+              },
+              "type": "windTurbine"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "rpm": {
+                  "field": "w2_rpm"
+                }
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Windmill 2",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 280,
+                "left": 726,
+                "top": 137,
+                "width": 259
+              },
+              "type": "windTurbine"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 11,
+                "text": {
+                  "fixed": "W4"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Windmill 4_label",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 26,
+                "left": 263,
+                "top": 480,
+                "width": 39
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 11,
+                "text": {
+                  "fixed": "W3"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Windmill 3_label",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 26,
+                "left": 91,
+                "top": 491,
+                "width": 39
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 11,
+                "text": {
+                  "fixed": "W2"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Windmill 2_label",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 26,
+                "left": 836,
+                "top": 495,
+                "width": 39
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 11,
+                "text": {
+                  "fixed": "W1"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "Windmill 1_label",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 26,
+                "left": 570,
+                "top": 495,
+                "width": 39
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "w4_status",
+                  "fixed": "green"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "field": "w4_status",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w4_status",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 306,
+                "top": 496,
+                "width": 137
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "w4_energy_output",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "field": "w4_energy_output",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w4_energy_value",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 306,
+                "top": 462,
+                "width": 58
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "fixed": "kW/s"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w4_energy_label",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 26,
+                "left": 357,
+                "top": 465,
+                "width": 56
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "w4_rpm",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "field": "w4_rpm",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w4_rpm_value",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 30.99609375,
+                "left": 306,
+                "top": 429,
+                "width": 36.9921875
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "fixed": "rpm"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w4_rpm_label",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 26,
+                "left": 335,
+                "top": 431,
+                "width": 48
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "w3_status",
+                  "fixed": "green"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "field": "w3_status",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w3_status",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 133,
+                "top": 490,
+                "width": 110
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "w3_energy_output",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "field": "w3_energy_output",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w3_energy_value",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 133,
+                "top": 456,
+                "width": 58
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "fixed": "kW/s"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w3_energy_label",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 27,
+                "left": 184,
+                "top": 458,
+                "width": 56
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "w3_rpm",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 13,
+                "text": {
+                  "field": "w3_rpm",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w3_rpm_value",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 133,
+                "top": 422,
+                "width": 37
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "fixed": "rpm"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w3_rpm_label",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 167,
+                "top": 422,
+                "width": 43
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "green"
+                },
+                "image": {
+                  "fixed": "",
+                  "mode": "fixed"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "field": "w2_status",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w2_status",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 874,
+                "top": 488,
+                "width": 110
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "w1_energy_output",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "field": "w2_energy_output",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w2_energy_value",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 874,
+                "top": 453,
+                "width": 58
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "fixed": "kW/s"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w2_energy_label",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 922,
+                "top": 453,
+                "width": 62
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "w1_rpm",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "field": "w2_rpm",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w2_rpm_value",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 874,
+                "top": 418,
+                "width": 37
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "fixed": "rpm"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w2_rpm_label",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 41,
+                "left": 889,
+                "top": 412,
+                "width": 80
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "green"
+                },
+                "image": {
+                  "fixed": "",
+                  "mode": "fixed"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "field": "w1_status",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w1_status",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 617,
+                "top": 500,
+                "width": 110
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "w1_energy_output",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "field": "w1_energy_output",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w1_energy_value",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 618,
+                "top": 465,
+                "width": 58
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "fixed": "kW/s"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w1_energy_label",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 667,
+                "top": 465,
+                "width": 58
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "field": "w1_rpm",
+                  "fixed": "#D9D9D9"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "field": "w1_rpm",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w1_rpm_value",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 31,
+                "left": 619,
+                "top": 429,
+                "width": 37
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 14,
+                "text": {
+                  "fixed": "rpm"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "name": "w1_rpm_label",
+              "oneClickMode": "off",
+              "placement": {
+                "height": 32,
+                "left": 646,
+                "top": 428,
+                "width": 54
+              },
+              "type": "text"
+            }
+          ],
+          "name": "Element 1664917007512",
+          "oneClickMode": "off",
+          "placement": {
+            "height": 100,
+            "left": 0,
+            "rotation": 0,
+            "top": 0,
+            "width": 100
+          },
+          "type": "frame"
+        },
+        "showAdvancedTypes": false
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "csvContent": "w1_rpm, w1_energy_output, w1_status, w2_rpm, w2_energy_output, w2_status, w3_rpm, w3_energy_output, w3_status, w4_rpm, w4_energy_output, w4_status\n50, 1.2, operational, 75, 1.8, operational, 25, 0.6, operational, 0, 0, needs maintenance",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "refId": "A",
+          "scenarioId": "csv_content"
+        }
+      ],
+      "title": "Canvas - Animated",
+      "transparent": true,
+      "type": "canvas"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 50,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "pointShape": "circle",
+            "pointSize": {
+              "fixed": 5
+            },
+            "pointStrokeWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "show": "points"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Miles_per_Gallon USA"
+            },
+            "properties": [
+              {
+                "id": "custom.axisLabel",
+                "value": "Miles_per_Gallon"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Acceleration USA"
+            },
+            "properties": [
+              {
+                "id": "custom.axisLabel",
+                "value": "Acceleration"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Miles_per_Gallon USA"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#f2495c80",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Miles_per_Gallon Europe"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5795f280",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Miles_per_Gallon Japan"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#ff983080",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 9,
+        "x": 0,
+        "y": 91
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mapping": "manual",
+        "series": [
+          {
+            "frame": {
+              "matcher": {
+                "id": "byIndex",
+                "options": 0
+              }
+            },
+            "x": {
+              "matcher": {
+                "id": "byName",
+                "options": "Acceleration USA"
+              }
+            },
+            "y": {
+              "matcher": {
+                "id": "byName",
+                "options": "Miles_per_Gallon USA"
+              }
+            }
+          },
+          {
+            "frame": {
+              "matcher": {
+                "id": "byIndex",
+                "options": 1
+              }
+            },
+            "x": {
+              "matcher": {
+                "id": "byName",
+                "options": "Acceleration Europe"
+              }
+            },
+            "y": {
+              "matcher": {
+                "id": "byName",
+                "options": "Miles_per_Gallon Europe"
+              }
+            }
+          },
+          {
+            "frame": {
+              "matcher": {
+                "id": "byIndex",
+                "options": 2
+              }
+            },
+            "x": {
+              "matcher": {
+                "id": "byName",
+                "options": "Acceleration Japan"
+              }
+            },
+            "y": {
+              "matcher": {
+                "id": "byName",
+                "options": "Miles_per_Gallon Japan"
+              }
+            }
+          }
+        ],
+        "tooltip": {
+          "hideZeros": false,
+          "maxHeight": 600,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "csvFileName": "automobiles.csv",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "refId": "A",
+          "scenarioId": "csv_file"
+        }
+      ],
+      "title": "XY chart - scatter plot",
+      "transformations": [
+        {
+          "id": "partitionByValues",
+          "options": {
+            "fields": [
+              "Origin"
+            ]
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "xychart"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "eegjzoxjwl6gwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-blue"
+              },
+              {
+                "color": "text",
+                "value": 499
+              },
+              {
+                "color": "dark-red",
+                "value": 700
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 11,
+        "x": 9,
+        "y": 91
+      },
+      "id": 20,
+      "options": {
+        "basemap": {
+          "config": {
+            "server": "world-imagery"
+          },
+          "name": "Layer 0",
+          "opacity": 0.8,
+          "tooltip": true,
+          "type": "esri-xyz"
+        },
+        "controls": {
+          "mouseWheelZoom": true,
+          "showAttribution": false,
+          "showDebug": false,
+          "showMeasure": false,
+          "showScale": false,
+          "showZoom": true
+        },
+        "layers": [
+          {
+            "config": {
+              "showLegend": true,
+              "style": {
+                "color": {
+                  "field": "Price",
+                  "fixed": "dark-blue"
+                },
+                "opacity": 0.9,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
+                },
+                "size": {
+                  "field": "Price",
+                  "fixed": 5,
+                  "max": 30,
+                  "min": 10
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/plane.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
+              }
+            },
+            "location": {
+              "mode": "auto"
+            },
+            "name": "Price ($)",
+            "tooltip": true,
+            "type": "markers"
+          }
+        ],
+        "tooltip": {
+          "mode": "details"
+        },
+        "view": {
+          "allLayers": true,
+          "id": "coords",
+          "lat": 38.395252,
+          "lon": -98.976363,
+          "shared": false,
+          "zoom": 4
+        }
+      },
+      "pluginVersion": "11.5.0-81938",
+      "targets": [
+        {
+          "csvFileName": "flight_info_by_state.csv",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "eegjzoxjwl6gwb"
+          },
+          "refId": "A",
+          "scenarioId": "csv_file"
+        }
+      ],
+      "title": "Geomap - US Flights by Price",
+      "transparent": true,
+      "type": "geomap"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": [
+            "tns-db",
+            "tns-app"
+          ],
+          "value": [
+            "tns-db",
+            "tns-app"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "eegjhugd9tfcwe"
+        },
+        "definition": "label_values(tns_request_duration_seconds_count,job)",
+        "includeAll": true,
+        "label": "service",
+        "multi": true,
+        "name": "service",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(tns_request_duration_seconds_count,job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": [
+            "404",
+            "500",
+            "503"
+          ],
+          "value": [
+            "404",
+            "500",
+            "503"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "eegjhugd9tfcwe"
+        },
+        "definition": "label_values(tns_request_duration_seconds_count{job=~\"$service\"},status_code)",
+        "includeAll": true,
+        "label": "HTTP Status Code",
+        "multi": true,
+        "name": "http_status",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(tns_request_duration_seconds_count{job=~\"$service\"},status_code)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Application Details (RED Metrics)",
+  "uid": "adkt9shdugkxsb",
+  "version": 4
+}
