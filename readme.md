@@ -38,9 +38,9 @@ There are 7 prerequisites for this setup. You only need to perform these pre-req
 
 7. Set up SAML SSO on your stack (Administration...Authentication...SAML) . Details in the "More Details" section below.
 
-Slides to set up the demo
-
-Use this slide deck as reference for your demo. To frame up the demo, a possible talk track is in the "More Details" section at the bottom of this Wiki.
+## Possible Scenario
+Details on the possible scenario are explained in the [More Details](https://github.com/mikempx/grafana-as-code/blob/main/readme.md#potential-talk-track) section, but can be summarized in the following picture.
+![Create App](/images/rbac.png)
 
 ### Step 1 - Describe the Terraform files we have
 
@@ -250,30 +250,28 @@ EDIT THIS FILE with your Service Account token and your new Grafana URL.
 * `userrbac.tf`: Defines custom user roles. 
 
 
-## Potential Talk Track
+## Possible Scenario
 Here’s our current situation:
-YOU are a new cloud customer and you’ve been tasked with setting up Grafana Cloud but “as code” as the company has a strong DevOps and SRE culture.
-There was a project kickoff call, but you missed it because you were on a much needed vacation.
-So, your boss reached out to your security team and provided them access to Grafana Cloud, and
-Much to your pleasant surprise, they have already integrated your IAM provider with Grafana Cloud.  
-Now that you’re back, it is up to you to set up the rest of Grafana Cloud via Terraform.
+You are a new Grafana Cloud customer and have been tasked with setting up Grafana Cloud “as code” as the company has a strong DevOps and SRE culture.
+Your security team has already integrated your IAM provider, OKTA, with Grafana Cloud.  
+It is up to you to set up the rest of Grafana Cloud via Terraform.
 
-Before you left for that awesome vacation, you worked with the product leads - your Grafana Consumers - on the three most important teams - Marketing, Finance, and your own SRE team.
+Regarding your internal "customers" - Marketing, Finance, and IT - their RBAC Requirements are as follows:
 
-RBAC Requirements for O11y as Code
+* Automated access for their users. They don’t want to call you to add a new user.
+  
+* Custom dashboards in which they’ve already shared with you.
+  
+* Dashboards should not be shared with other teams.
+  
+* Alert definitions should not be shared with other teams.
+  
+* Reporting - Marketing needs reporting but not Finance.
+  
+* All logs entering their system cannot be seen by Finance.  However, Finance is required to see a particular set of data coming from Northern Virginia.
+  
+* All of this needs to be maintained as code.  
 
-They want:
-
-Automated access for their users. they don’t want to call you to add a new user.  
-Custom dashboards in which they’ve already shared with you…but they don’t want to share those views in Grafana with other teams.
-Finance doesn’t want to show their data to Marketing, and vice-versa.  
-PLUS, with all of the pent-up demand for grafana there are going to be thousands of dashboards being created, they just want it easy to find their stuff.
-Alerts - they want alerts for their data.
-Reporting - IT and Marketing both need reporting but Finance does not.
-Marketing in particular asked if they could “keep tabs” on the kubernetes infrastructure. Rather than personally going into that political fight, you’re taking the high road and want to test if it can be done.
-Maintain “As Code” - all of this needs to be as code.  All three teams don’t want anyone having the ability to edit or delete the production alerts or modify the “gold standard” dashboards they intend to deploy.
-
-Are there any questions before we jump in?
 
 # Post Demo
 
