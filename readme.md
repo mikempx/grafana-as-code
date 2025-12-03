@@ -173,35 +173,65 @@ Once logged into OKTA, make sure you are in the `Okta Admin Console`, the two to
 Go to Applications > Applications and `Create App Integration`.  Choose `SAML 2.0` and click *Next*.
 1. In General Settings, provide an App Name of **Grafana Cloud** and click next.
     ![Create App](/images/1OKTA-SAML.png)
+
 2a. In SAML Settings, set Single sign-on URL to `https://<your Grafana Cloud URL>/saml/acs`
+
 2b. Also, set Audience URI to `https://<your Grafana Cloud URL>/saml/metadata`
  ![SAML settings](/images/2OKTA-SAML.png)
 3. Scrolling down, set the following **Attribute Statements**:
+
 login -> `user.login`
+
 email -> `user.email`
+
 displayName -> `user.firstName`
+
 Set the following **Group Attribute Statement**:
+
 groups -> filter (Matches regex) -> `.*`
  ![SAML settings](/images/3OKTA-SAML.png)
 Click on `Next` and `Finish`.
+
 4. In your new Grafana Cloud "Application" within OKTA, click on the `Sign On` tab.  It contains the Metadata URL you will paste into Grafana later.
  ![SAML settings](/images/4OKTA-SAML.png)
-5. Scrolling up within OKTA, go to Directory -> Groups and then click on **Add Group**.  Add groups `Finance`, `Marketing`, and `IT`.  Note that there's already a default group called `Everyone`.
+5. Scrolling up within OKTA, go to Directory -> Groups and then click on **Add Group**.
+
+Add groups `Finance`, `Marketing`, and `IT`.  Note that there's already a default group called `Everyone`.
+
 ![SAML settings](/images/5OKTA-SAML.png)
-5a. Go to Directory -> People and then **Add Person**. Make sure you:
-* Add their Group
-* Check/enable on *I will set password*
-To make it simple to remember, I set all passwords to `Grafana123!`
+
+5a. For each new Group, go to the `Applications` tab and click on `Assign Applications`. Click on the `Assign` button next to `Grafana Cloud`.
+![SAML settings](/images/5dOKTA-SAML.png)
+
+5b. Go to Directory -> People and then **Add Person**. Make sure you:
+* Add their Group.  In the picture below, we align the `Marketing` group to the user's profile.
+* Check/enable on *I will set password*. To make it simple to remember, I set all passwords to `Grafana123!`
+
 * Uncheck/disable *User must change password on first login*
+
 For Marketing, I create at least one user - `mary.martin@example.com`
+
 For Finance, I create at least one user - `frank.ford@example.com`
+
 For IT, I create at least one user - `ian.ally@example.com`
+
 ![User creation](/images/5bOKTA-SAML.png)
 ![Users in OKTA](/images/5cOKTA-SAML.png)
 
+5. Going back to Applications > Applications and your new `Grafana Cloud` Application within OKTA, clicking on the `Assignments` tab, you should see that all groups have been assigned to the Grafana Cloud application.  Also, when clicking on a Group name, you should see that the users are properly assigned to their groups as well.
+![User creation](/images/5aOKTA-SAML.png)
 
-In your new Grafana Cloud "Application" within OKTA, click on the `Assignments` tab. 
+6. Moving over to Grafana Cloud, go to **Administration -> Authentication -> SAML**
+7. In Grafana Cloud Setup SAML single sign on step 1, for Display name, type `OKTA`and click on `Next: Sign requests`
+8. In Grafana Cloud Setup SAML single sign on step 2, click on `Next: Connect Grafana with Identity Provider`
+9. In Grafana Cloud Setup SAML single sign on step 3, paste the Metadata URL generated from (4) above into this empty field and click `Next: User mapping`
+![Users in OKTA](/images/6OKTA-SAML.png)
+10. In Grafana Cloud Setup SAML single sign on step 4, configure the `Assertion attributes mappings` and `Role mapping` as shown here.  Most important to note is that we will be taking a LEAST PRIVILEGE approach as the group `Everyone` will have no default role whatsoever.  All access rights will be granted through Team Sync.  
+![Users in OKTA](/images/7OKTA-SAML.png)    
+11. Click on `Test and enable` and then `Save and enable`.
+12. Open an Incognito Window on your browser and visit your Grafana Cloud login.  It takes a minute or two for enablement, but you will eventually have two login buttons - one of which will state, `Sign in with OKTA`.
 
+That's it! Your Grafana Cloud instance is now configured with SSO and you can perform your as-code deployment.
 
 # More Details
 
