@@ -32,11 +32,9 @@ There are 7 prerequisites for this setup. You only need to perform these pre-req
 
 ![Service Account](/images/serviceaccount-TF.png)   
 
-5. Copy the grafana url and the token to your provider.tf file and then run the command, terraform init.
+5. Copy the grafana url and the token to your provider.tf file and then run the command, `terraform init`.
 
-Create an Administrative Service Account called "TERRAFORM" with a token. Copy that token to provider.tf.
-
-6. Create your OKTA environment. Details in the "More Details" section below. You will be surprised how easy it is to configure OKTA for the first time.
+6. **Create your OKTA environment**. Details in the "OKTA Details" section below. You will be surprised how easy it is to configure OKTA for the first time.
 
 7. Set up SAML SSO on your stack (Administration...Authentication...SAML) . Details in the "More Details" section below.
 
@@ -115,7 +113,7 @@ Clicking on the Grafana Logo to open the menu, we can see that Finance also has 
 
 Let's log out and see what it looks like for the Marketing team - again, for the FIRST TIME EVER.
 
-Step 4 - Login as mary.martin@example.com and describe what is available to Marketing users
+### Step 4 - Login as mary.martin@example.com and describe what is available to Marketing users
 
 Logout and login as mary.martin@example.com/Grafana123!
 
@@ -126,11 +124,9 @@ Clicking on dashboards, they too only have one folder, and
 When we open the menu, we see that Marketing also has Alerting, but clicking on the Alert Rules, the one alert definition is tied to their data sources on not anyone else's.
 
 
-
-
 Now let's log in as an administrator.
 
-Step 5 - Login as yourself to describe what is available to Administrators
+### Step 5 - Login as yourself to describe what is available to Administrators
 
 Log in as yourself in Grafana.com OR login as ially/Grafana123!
 
@@ -144,32 +140,67 @@ Finally, I can click on Alerting at the top and go to Notification policies, and
 
 So pretty powerful stuff. Any questions before we continue?
 
-Step 6 - Make code changes, reapply, and see the power of "o11y as code"
+### Step 6 - Make code changes, reapply, and see the power of "o11y as code"
 
 We have 2 changes to make in our demo here.
 
 The first is that we need to "unpause" those billing alerts; and
 the second is that I forgot that Marketing needed access to the Kubernetes application. So let's go make those changes.
 
-Open up alerts_billing.tf and search for is_paused = true. Change at least one of the 4 entries to false.
+Open up alerts_billing.tf and search for `is_paused = true`. Change at least one of the 4 entries to false.
 
 Open up userrbac.tf. Describe that we have two custom roles in this file. The top half is tied to the Finance team, but the bottom is tied to the Marketing team. In the file, the K8s app is properly defined, but the bottom - where we apply the role to the Marketing team is commented out. Uncomment those 5 lines AND increment the version number of the grafana_role for additional_apps by 1.
 
-Re-run terraform apply
+Re-run `terraform apply`
 
 Now that we've made our changes, let's log in to see the effects.
 
-Log in as yourself in Grafana.com and go straight to Alerts & IRM > Alerting > Alert rules and open the Billing Alerts folder. The alerts are now running.
+Log in as yourself in Grafana.com and go straight to `Alerts & IRM > Alerting > Alert rules` and open the `Billing Alerts` folder. The alerts are now running.
 
 So the value of that is if your teams are doing some testing and just want to be sure there will be no false positive alerts being sent, it is very, very simple to make a change as code to pause your alert evaluations, do your testing, and then turn them back on as code when you are done. Let's now see the effects of applying the custom RBAC rule for Kubernetes to the Marketing team.
 
-logout and log back in as mmartin/Grafana123!. Click on the Grafana logo to open the menu and <tada> there's the K8s app.
+logout and log back in as `mary.martin@example.com` (Grafana123!). Click on the Grafana logo to open the menu and <tada> there's the K8s app.
 
 Any questions before we go back to slides and cover how to get started with Grafana's Terraform provider and implementing Observability as Code?
 
 The "getting started" notes are in the notes section of the slides themselves.
 
 
+# OKTA Details
+To get started as a new user of OKTA, go to https://developer.okta.com/signup/ and choose `Access the Okta Integrator Free Plan`.  Sign up and get logged into your OKTA integrator instance. 
+Once logged into OKTA, make sure you are in the `Okta Admin Console`, the two toggle button on the upper left.
+
+Go to Applications > Applications and `Create App Integration`.  Choose `SAML 2.0` and click *Next*.
+1. In General Settings, provide an App Name of **Grafana Cloud** and click next.
+    ![Create App](/images/1OKTA-SAML.png)
+2a. In SAML Settings, set Single sign-on URL to `https://<your Grafana Cloud URL>/saml/acs`
+2b. Also, set Audience URI to `https://<your Grafana Cloud URL>/saml/metadata`
+ ![SAML settings](/images/2OKTA-SAML.png)
+3. Scrolling down, set the following **Attribute Statements**:
+login -> `user.login`
+email -> `user.email`
+displayName -> `user.firstName`
+Set the following **Group Attribute Statement**:
+groups -> filter (Matches regex) -> `.*`
+ ![SAML settings](/images/3OKTA-SAML.png)
+Click on `Next` and `Finish`.
+4. In your new Grafana Cloud "Application" within OKTA, click on the `Sign On` tab.  It contains the Metadata URL you will paste into Grafana later.
+ ![SAML settings](/images/4OKTA-SAML.png)
+5. Scrolling up within OKTA, go to Directory -> Groups and then click on **Add Group**.  Add groups `Finance`, `Marketing`, and `IT`.  Note that there's already a default group called `Everyone`.
+![SAML settings](/images/5OKTA-SAML.png)
+5a. Go to Directory -> People and then **Add Person**. Make sure you:
+* Add their Group
+* Check/enable on *I will set password*
+To make it simple to remember, I set all passwords to `Grafana123!`
+* Uncheck/disable *User must change password on first login*
+For Marketing, I create at least one user - `mary.martin@example.com`
+For Finance, I create at least one user - `frank.ford@example.com`
+For IT, I create at least one user - `ian.ally@example.com`
+![User creation](/images/5bOKTA-SAML.png)
+![Users in OKTA](/images/5cOKTA-SAML.png)
+
+
+In your new Grafana Cloud "Application" within OKTA, click on the `Assignments` tab. 
 
 
 # More Details
