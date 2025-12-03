@@ -50,7 +50,7 @@ The most important file is the provider as it gives us access to our Grafana Clo
 
 Next, we have a set of 3 datasources. Each one is configured a bit differently based on the credentials. I'll show you the Prometheus one as an example.
 
-show the contents of datasourceprometheus.tf - quickly.
+show the contents of `datasourceprometheus.tf` - quickly.
 
 We have a file called teams. In Grafana, Teams are simply groups of users with common permissions.
 
@@ -64,13 +64,13 @@ In this teams file, we do 3 things:
 
 show the contents of teams.tf during your talk track above.
 
-We also have an important one called apply_folder_permissions. This one is more involved so let's open it up and see what it does.
+We also have an important one called `apply_folder_permissions`. This one is more involved so let's open it up and see what it does.
 
 First, it creates 3 folder objects - one per team.
 It then imports 3 dashboards and places those dashboards into the folders. So you can see, for example, in the 2nd line, we create a resource called ITcollection. Then, on line 33 we import the itdash.json dashboard and on line 36 we reference that folder.
 The second half of the file then adjusts the permissions of the folders, referencing the team objects we created in our teams terraform file. One important thing to note is that we also add a permission of Admin. By default, all dashboards in a folder can be also Edited by Editors and Viewed by Viewers. By adding just Admin, we are taking a "Least Privilege" approach to who can access the data.
 
-show the contents of apply_folder_permissions.tf during your talk track above.
+show the contents of `apply_folder_permissions.tf` during your talk track above.
 
 I'm not going to go through all of these because
 
