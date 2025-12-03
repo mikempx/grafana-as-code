@@ -105,11 +105,11 @@ First, we will log in as a Finance person for the FIRST TIME EVER.
 frank.ford@example.com/Grafana123! Note: all user passwords are Grafana123!
 
 You see that Ford lands on his custom dashboard with all of the Finance details his team is responsible for.
+
+Within the custom dashboard, let's focus on the graph, `Web Site Latency by Data Center (ms)`.
+
 Clicking on dashboards, he sees that he has only ONE folder: FINANCE'S automated folder
 Clicking on the Grafana Logo to open the menu, we can see that Finance also has access to alerts. Clicking on Alert Rules, you see that they have one folder with one alert defined.
-
-
-
 
 Let's log out and see what it looks like for the Marketing team - again, for the FIRST TIME EVER.
 
@@ -123,12 +123,13 @@ Clicking on dashboards, they too only have one folder, and
 
 When we open the menu, we see that Marketing also has Alerting, but clicking on the Alert Rules, the one alert definition is tied to their data sources on not anyone else's.
 
+Finally, notice that Marketing has the Reporting feature (under Dashboards), while Finance did not.
 
 Now let's log in as an administrator.
 
 ### Step 5 - Login as yourself to describe what is available to Administrators
 
-Log in as yourself in Grafana.com OR login as ially/Grafana123!
+Log in as yourself in Grafana.com OR login as ian.ally@example.com/Grafana123!
 
 When we open the menu, you can see we have access to it all. I am going to focus, however, on the alerting component.
 
