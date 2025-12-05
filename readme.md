@@ -67,7 +67,9 @@ show the contents of teams.tf during your talk track above.
 We also have an important one called `apply_folder_permissions`. This one is more involved so let's open it up and see what it does.
 
 (1) First, it creates 3 folder objects - one per team.
+
 (2) It then imports 3 dashboards and places those dashboards into the folders. So you can see, for example, in the 2nd line, we create a resource called ITcollection. Then, on line 33 we import the itdash.json dashboard and on line 36 we reference that folder.
+
 (3) The second half of the file then adjusts the permissions of the folders, referencing the team objects we created in our teams terraform file. One important thing to note is that we also add a permission of Admin. By default, all dashboards in a folder can be also Edited by Editors and Viewed by Viewers. By adding just Admin, we are taking a "Least Privilege" approach to who can access the data.
 
 show the contents of `apply_folder_permissions.tf` during your talk track above.
@@ -90,7 +92,9 @@ So before we apply our code, let's do a quick run-through of the cloud environme
 At minimum:
 
 (1) Go to Dashboards and so that there are none except for the GrafanaCloud folder with lots of stuff in it. NOTE: you may want to move or delete the default "OnCall Insights" dashboard as, IMHO, it should really be in the GrafanaCloud folder (or not present altogether if IRM is not in use).
+
 (2) Go to Administration->Users and access->Teams along with Users and show that they are blank.
+
 (3) Go to Administration->Connections->Data source and show that there are none who start with double dash "--" preceding their name.
 
 There are also no contact points, notification policies or mute timings in this brand new environment but I think by now you probably believe me that they aren't going to be there.
