@@ -34,7 +34,7 @@ There are 7 prerequisites for this setup. You only need to perform these pre-req
 
 5. Copy the grafana url and the token to your provider.tf file and then run the command, `terraform init`.
 
-6. **Create your OKTA environment**. Details in the "OKTA Details" section below. You will be surprised how easy it is to configure OKTA for the first time.
+6. **Create your OKTA environment**. Details in the [OKTA Details](https://github.com/mikempx/grafana-as-code/blob/main/readme.md#okta-details) section below. You will be surprised how easy it is to configure OKTA for the first time.
 
 7. Set up SAML SSO on your stack (Administration...Authentication...SAML) . Details in the "More Details" section below.
 
