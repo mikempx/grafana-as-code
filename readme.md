@@ -66,56 +66,57 @@ show the contents of teams.tf during your talk track above.
 
 We also have an important one called `apply_folder_permissions`. This one is more involved so let's open it up and see what it does.
 
-First, it creates 3 folder objects - one per team.
-It then imports 3 dashboards and places those dashboards into the folders. So you can see, for example, in the 2nd line, we create a resource called ITcollection. Then, on line 33 we import the itdash.json dashboard and on line 36 we reference that folder.
-The second half of the file then adjusts the permissions of the folders, referencing the team objects we created in our teams terraform file. One important thing to note is that we also add a permission of Admin. By default, all dashboards in a folder can be also Edited by Editors and Viewed by Viewers. By adding just Admin, we are taking a "Least Privilege" approach to who can access the data.
+(1) First, it creates 3 folder objects - one per team.
+(2) It then imports 3 dashboards and places those dashboards into the folders. So you can see, for example, in the 2nd line, we create a resource called ITcollection. Then, on line 33 we import the itdash.json dashboard and on line 36 we reference that folder.
+(3) The second half of the file then adjusts the permissions of the folders, referencing the team objects we created in our teams terraform file. One important thing to note is that we also add a permission of Admin. By default, all dashboards in a folder can be also Edited by Editors and Viewed by Viewers. By adding just Admin, we are taking a "Least Privilege" approach to who can access the data.
 
 show the contents of `apply_folder_permissions.tf` during your talk track above.
 
-I'm not going to go through all of these because
+Here are essentially what the other files do:
 
-the 3 alerts_* files have our alert definitions
-notif has an automated contact point, a mute policy, and a notification policy tree
-datasource_perms, similar to our folders, has access locked down so that one certain teams can access the underlying data.
-we also want to hide the administrative folder Grafana Cloud provides us, and so there's a file to make it an Admin-only folder;
-We also have 3 json dashboard files - one dashboard per team; and finally
-there's userrbac which contains a granular, role-based access controls for your users. We will show an example of that at the end if we have time.
+* The 3 *alerts_* files have our alert definitions;
+* *notif* has an automated contact point, a mute policy, and a notification policy tree;
+* *datasource_perms*, similar to our folders, has access locked down so that one certain teams can access the underlying data.
+* We also want to hide the administrative folder Grafana Cloud provides us, and so there's a file to make it an Admin-only folder;
+* We also have 3 json dashboard files - one dashboard per team; and finally
+* There's *userrbac.tf* which contains a granular, role-based access controls for your users.
+  
 ### Step 2 - Run Through your unpopulated Cloud Environment
 
 So before we apply our code, let's do a quick run-through of the cloud environment.
 
-Tip: "Bookmark" the following: Users, Teams, Data Sources, Alert Rules, Dashboards, Authentication.
+*Tip:* "Bookmark" the following: Users, Teams, Data Sources, Alert Rules, Dashboards, Authentication.
 
 At minimum:
 
-Go to Dashboards and so that there are none except for the GrafanaCloud folder with lots of stuff in it. NOTE: you may want to move or delete the default "OnCall Insights" dashboard as, IMHO, it should really be in the GrafanaCloud folder (or not present altogether if IRM is not in use).
-Go to Administration->Users and access->Teams along with Users and show that they are blank.
-Go to Administration->Connections->Data source and show that there are none who start with double dash "--" preceding their name.
+(1) Go to Dashboards and so that there are none except for the GrafanaCloud folder with lots of stuff in it. NOTE: you may want to move or delete the default "OnCall Insights" dashboard as, IMHO, it should really be in the GrafanaCloud folder (or not present altogether if IRM is not in use).
+(2) Go to Administration->Users and access->Teams along with Users and show that they are blank.
+(3) Go to Administration->Connections->Data source and show that there are none who start with double dash "--" preceding their name.
 
-I can also show the lack of contact points, notification policies and mute timings but I think by now you probably believe me that they aren't going to be there.
+There are also no contact points, notification policies or mute timings in this brand new environment but I think by now you probably believe me that they aren't going to be there.
 
 So without further adieu, let's run it!
 
 ### Step 3 - Run Terraform and describe what is available to Finance users
 
-terraform apply and to confirm yes
+`terraform apply` and to confirm, type `yes`
 
 First, we will log in as a Finance person for the FIRST TIME EVER.
 
-frank.ford@example.com/Grafana123! Note: all user passwords are Grafana123!
+`frank.ford@example.com` Note: all user passwords are `Grafana123!` for ease of recall.
 
-You see that Ford lands on his custom dashboard with all of the Finance details his team is responsible for.
+* You see that Frank lands on his custom dashboard with all of the Finance details his team is responsible for.
 
-Within the custom dashboard, let's focus on the graph, `Web Site Latency by Data Center (ms)`.
+* Within this custom dashboard, let's focus on the graph, `Web Site Latency by Data Center (ms)`.  In the graph, we see latency for the location "NorthVirginia" only.  We are leveraging `label based access controls` or **LBAC** to limit the data the Finance team is allowed to see for this data source.
 
-Clicking on dashboards, he sees that he has only ONE folder: FINANCE'S automated folder
-Clicking on the Grafana Logo to open the menu, we can see that Finance also has access to alerts. Clicking on Alert Rules, you see that they have one folder with one alert defined.
+* Clicking on dashboards, he sees that he has only ONE folder: FINANCE'S automated folder
+* Clicking on the Grafana Logo to open the menu, we can see that Finance also has access to alerts. Clicking on Alert Rules, you see that they have one folder with one alert defined.
 
 Let's log out and see what it looks like for the Marketing team - again, for the FIRST TIME EVER.
 
 ### Step 4 - Login as mary.martin@example.com and describe what is available to Marketing users
 
-Logout and login as mary.martin@example.com/Grafana123!
+Logout and login as `mary.martin@example.com` (Grafana123!)
 
 Logging in, you first notice that Marketing lands on their web site tracking dashboard powered by sending NGINX logs to Grafana Cloud.
 
@@ -129,28 +130,28 @@ Now let's log in as an administrator.
 
 ### Step 5 - Login as yourself to describe what is available to Administrators
 
-Log in as yourself in Grafana.com OR login as ian.ally@example.com/Grafana123!
+Log in as yourself in Grafana.com OR login as `ian.ally@example.com` (Grafana123!)
 
-When we open the menu, you can see we have access to it all. I am going to focus, however, on the alerting component.
+When we open the menu, you can see we have access to all features and data sources.
 
-First, if I go to Alert rules, I can not only see the Alert rules for Finance and Marketing, I can also see a folder for Billing Alerts. If I open that up, I can see that 3 of the 4 alerts are paused at the moment. Let's change that via code in a bit..
+* First, let's go back to the Finance dashboard.  You see in the `Web Site Latency by Data Center (ms)` graph that there are 3 signals now.  Since we have administrative privileges, `Label Based Access Controls` are not in play anymore.
 
-Also, if you stay on this page and filter our alerts on Contact point, you can see that all of our alert rules are linked to the new Contact Point.
+* Next, if I go to Alert rules, I can not only see the Alert rules for Finance and Marketing, I can also see a folder for Billing Alerts. If I open that up, I can see that 3 of the 4 alerts are paused at the moment. 
 
-Finally, I can click on Alerting at the top and go to Notification policies, and you can see the entire logic tree that we've implemented as code.
+* Also, if you stay on this page and filter our alerts on Contact point, you can see that all of our alert rules are linked to the new Contact Point.
 
-So pretty powerful stuff. Any questions before we continue?
+* Finally, I can click on Alerting at the top and go to Notification policies, and you can see the entire logic tree that we've implemented as code.
 
 ### Step 6 - Make code changes, reapply, and see the power of "o11y as code"
 
 We have 2 changes to make in our demo here.
 
-The first is that we need to "unpause" those billing alerts; and
-the second is that I forgot that Marketing needed access to the Kubernetes application. So let's go make those changes.
+(1) The first is that we need to "unpause" those billing alerts; and
+(2) the second is that I forgot that Marketing needed access to the Kubernetes application. So let's go make those changes.
 
-Open up alerts_billing.tf and search for `is_paused = true`. Change at least one of the 4 entries to false.
+Open up `alerts_billing.tf` and search for **is_paused = true**. Change at least one of the 4 entries to false.
 
-Open up userrbac.tf. Describe that we have two custom roles in this file. The top half is tied to the Finance team, but the bottom is tied to the Marketing team. In the file, the K8s app is properly defined, but the bottom - where we apply the role to the Marketing team is commented out. Uncomment those 5 lines AND increment the version number of the grafana_role for additional_apps by 1.
+**OPTIONAL:** Open up `userrbac.tf`. Describe that we have two custom roles in this file. The top half is tied to the Finance team, but the bottom is tied to the Marketing team. In the file, the K8s app is properly defined, but the bottom - where we apply the role to the Marketing team is commented out. Uncomment those 5 lines AND *increment the version number* of the grafana_role for additional_apps by 1.
 
 Re-run `terraform apply`
 
@@ -158,14 +159,9 @@ Now that we've made our changes, let's log in to see the effects.
 
 Log in as yourself in Grafana.com and go straight to `Alerts & IRM > Alerting > Alert rules` and open the `Billing Alerts` folder. The alerts are now running.
 
-So the value of that is if your teams are doing some testing and just want to be sure there will be no false positive alerts being sent, it is very, very simple to make a change as code to pause your alert evaluations, do your testing, and then turn them back on as code when you are done. Let's now see the effects of applying the custom RBAC rule for Kubernetes to the Marketing team.
+* So the value of that is if your teams are doing some testing and just want to be sure there will be no false positive alerts being sent, it is very, very simple to make a change as code to pause your alert evaluations, do your testing, and then turn them back on as code when you are done. Let's now see the effects of applying the custom RBAC rule for Kubernetes to the Marketing team.
 
 logout and log back in as `mary.martin@example.com` (Grafana123!). Click on the Grafana logo to open the menu and <tada> there's the K8s app.
-
-Any questions before we go back to slides and cover how to get started with Grafana's Terraform provider and implementing Observability as Code?
-
-The "getting started" notes are in the notes section of the slides themselves.
-
 
 # OKTA Details
 To get started as a new user of OKTA, go to https://developer.okta.com/signup/ and choose `Access the Okta Integrator Free Plan`.  Sign up and get logged into your OKTA integrator instance. 
