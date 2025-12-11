@@ -20,7 +20,7 @@ Access to all of these elements depends upon the user's access rights. When a us
 
 # Prerequisites
 
-There are 7 prerequisites for this setup. You only need to perform these pre-requisites once.
+There are 9 prerequisites for this setup. You only need to perform these pre-requisites once.
 
 1. Install Grafana's latest [Terraform provider](https://github.com/grafana/terraform-provider-grafana/releases).
 
@@ -37,6 +37,10 @@ There are 7 prerequisites for this setup. You only need to perform these pre-req
 6. **Create your OKTA environment**. Details in the [OKTA Details](https://github.com/mikempx/grafana-as-code/blob/main/readme.md#okta-details) section below. You will be surprised how easy it is to configure OKTA for the first time.
 
 7. Set up SAML SSO on your stack (Administration...Authentication...SAML) . Details in the "More Details" section below.
+
+8. In your Grafana Cloud environment, you need to enable the "🍕QuickPizza SRE Demo".  Go to "More Apps" > "Demo Data Dashboards" > "Install Dashboards".  It is required for our Label-Based Access Control to work as the datasource, `grafanacloud-demoinfra-prom` will be added to your Grafana Cloud instance.
+
+9. You will need to install the Infinity plugin to your your Grafana Cloud environment.  Go to "Administration" > "Plugins and Data" > "Plugins". Search for `Infinity` and then click `Install`.
 
 ## Possible Scenario
 Details on the possible scenario are explained in the [More Details](https://github.com/mikempx/grafana-as-code/blob/main/readme.md#potential-talk-track) section, but can be summarized in the following picture.
