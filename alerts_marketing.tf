@@ -16,7 +16,7 @@ resource "grafana_rule_group" "rule_group_461caf519df17bc4" {
         to   = 0
       }
 
-      datasource_uid = grafana_data_source.NGINX.uid
+      datasource_uid = grafana_data_source.infinity.uid
       model          = "{\"datasource\":{\"type\":\"loki\",\"uid\":\"eeh4dbp9wdreof\"},\"editorMode\":\"builder\",\"expr\":\"sum by(host, status) (rate({host=\\\"appfelstrudel\\\"} |= `` | json | __error__=`` [$__auto]))\",\"hide\":false,\"instant\":true,\"intervalMs\":1000,\"maxDataPoints\":43200,\"queryType\":\"range\",\"refId\":\"A\"}"
     }
     data {

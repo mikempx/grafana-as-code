@@ -1,51 +1,79 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_YESOREYERAM-INFINITY-DATASOURCE",
+      "label": "yesoreyeram-infinity-datasource",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "yesoreyeram-infinity-datasource",
+      "pluginName": "Infinity"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "geomap",
+      "name": "Geomap",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.4.0-20140193743"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "yesoreyeram-infinity-datasource",
+      "name": "Infinity",
+      "version": "3.4.1"
+    }
+  ],
   "annotations": {
     "list": [
       {
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
         "type": "dashboard"
       }
     ]
   },
-  "description": "Loki v2+ showcase using JSON NGINX access logs.",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2970,
   "links": [],
   "panels": [
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 24,
-      "panels": [],
-      "title": "KPIs",
-      "type": "row"
-    },
-    {
       "datasource": {
-        "uid": "$datasource"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "bdktck0gfh4hse"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -56,323 +84,339 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "purple",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 5,
-        "x": 0,
-        "y": 1
-      },
-      "hideTimeOverride": false,
-      "id": 4,
-      "maxDataPoints": 300,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "expr": "sum by(host) (count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"}[$__interval]))  ",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": "24h",
-      "title": "Total requests  ",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "percentage",
-            "steps": [
-              {
-                "color": "rgba(110, 157, 228, 0.76)",
-                "value": null
+                "color": "green",
+                "value": 0
               },
               {
-                "color": "rgba(73, 124, 202, 1)",
-                "value": 20
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 7,
-        "x": 5,
-        "y": 1
-      },
-      "id": 5,
-      "maxDataPoints": 20,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "expr": "sum by (status) (count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json |  __error__=\"\" [$__interval]))",
-          "instant": false,
-          "legendFormat": "HTTP Status: {{status}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Requests per status code",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "semi-dark-orange",
-                "value": null
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 12,
-        "y": 1
-      },
-      "id": 30,
-      "maxDataPoints": 1,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "expr": "bytes_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"}[$__interval])",
-          "instant": true,
-          "legendFormat": "$label_value",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "NGINX logs in bytes",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "purple",
-                "value": null
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 15,
-        "y": 1
-      },
-      "id": 8,
-      "maxDataPoints": 1,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "expr": "sum by (host) (sum_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json | unwrap body_bytes_sent |  __error__=\"\" [$__interval]))",
-          "instant": true,
-          "legendFormat": "Bytes sent",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Total Bytes Sent",
-      "type": "stat"
-    },
-    {
-      "description": "",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 1
-      },
-      "id": 34,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "📊 Dashboard created by Ward Bekker (hope you like it!)\n\n🐦 Follow me on [Twitter](https://twitter.com/wardbekker) & [LinkedIn](https://www.linkedin.com/in/wardbekker/) for  Grafana Loki updates \n\n🎥 Check out my [Grafana Loki video's](https://www.youtube.com/playlist?list=PLDGkOdUX1UjqEzcxQrbROMy8DN7MZv_h4) on Youtube",
-        "mode": "markdown"
-      },
-      "pluginVersion": "11.4.0",
-      "title": "",
-      "transparent": true,
-      "type": "text"
-    },
-    {
-      "datasource": {
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "purple",
-                "value": null
+                "color": "red",
+                "value": 80
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "total"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 5000
+                    },
+                    {
+                      "color": "green",
+                      "value": 10000
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 50000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 100000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "discountedTotal"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 2500
+                    },
+                    {
+                      "color": "green",
+                      "value": 5000
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 50000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 100000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Unit Price ($)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Customer Discount (%)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 0.1
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.15
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 4,
-        "w": 5,
+        "h": 5,
+        "w": 4,
         "x": 0,
-        "y": 5
+        "y": 0
       },
-      "id": 22,
-      "interval": "5m",
+      "id": 5,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "auto",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20140193743",
+      "targets": [
+        {
+          "columns": [],
+          "computed_columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdktck0gfh4hse"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "groq": "*",
+          "parser": "uql",
+          "refId": "A",
+          "root_selector": "carts\n{\n  \"total\": $sum(carts.total),\n  \"discountedTotal\": $sum(carts.discountedTotal),\n  \"totalProducts\": $sum(carts.totalProducts),\n  \"totalQuantity\": $sum(carts.totalQuantity)\n}",
+          "source": "url",
+          "summarizeBy": "",
+          "summarizeExpression": "",
+          "type": "json",
+          "uql": "parse-json\n| scope \"carts\"\n| project \"discountedTotal\"\n",
+          "url": "https://dummyjson.com/carts",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Total Sales",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "bdktck0gfh4hse"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "total"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 5000
+                    },
+                    {
+                      "color": "green",
+                      "value": 10000
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 50000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 100000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "discountedTotal"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 2500
+                    },
+                    {
+                      "color": "green",
+                      "value": 5000
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 50000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 100000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Global Customer Discount (%)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 5,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "vertical",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
@@ -382,244 +426,819 @@
           "values": false
         },
         "showPercentChange": false,
-        "text": {},
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "expr": "count(sum by (remote_addr) (count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json |  __error__=\"\" [$__interval])))",
-          "instant": true,
-          "legendFormat": "",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "timeFrom": "5m",
-      "title": "Realtime visitors ",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "semi-dark-orange",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 12,
-        "y": 5
-      },
-      "id": 31,
-      "maxDataPoints": 1,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "sum"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.4.0-20140193743",
       "targets": [
         {
+          "columns": [],
+          "computed_columns": [],
           "datasource": {
-            "uid": "$datasource"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdktck0gfh4hse"
           },
-          "expr": "count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"}[$__interval])",
-          "instant": true,
-          "range": false,
-          "refId": "A"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "groq": "*",
+          "parser": "uql",
+          "refId": "A",
+          "root_selector": "carts\n{\n  \"total\": $sum(carts.total),\n  \"discountedTotal\": $sum(carts.discountedTotal),\n  \"totalProducts\": $sum(carts.totalProducts),\n  \"totalQuantity\": $sum(carts.totalQuantity)\n}",
+          "source": "url",
+          "summarizeBy": "",
+          "summarizeExpression": "",
+          "type": "json",
+          "uql": "parse-json\n| scope \"carts\"\n| project \"discountedTotal\",\"total\"\n",
+          "url": "https://dummyjson.com/carts",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
         }
       ],
-      "title": "# NGINX log lines",
+      "title": "Global Discount Rate (Mean)",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "discountedTotal"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "total"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Global Customer Discount (%)",
+            "binary": {
+              "left": {
+                "fixed": "1"
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "discountedTotal / total"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "transparent": true,
       "type": "stat"
     },
     {
       "datasource": {
-        "uid": "$datasource"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "bdktck0gfh4hse"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "thresholds"
           },
-          "decimals": 1,
           "mappings": [],
-          "max": 100,
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "purple",
-                "value": null
+                "color": "green",
+                "value": 0
               },
               {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 3,
-        "x": 15,
-        "y": 5
-      },
-      "hideTimeOverride": true,
-      "id": 19,
-      "maxDataPoints": 1,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "max"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "value",
-        "wideLayout": true
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "expr": "sum(count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json | status >= 500 |__error__=\"\"[$__interval])) / (sum(count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json | __error__=\"\"[$__interval]))/ 100)",
-          "instant": false,
-          "legendFormat": "",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "timeFrom": "1h",
-      "title": "% of 5xx requests ",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "max": 100,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
+                "color": "super-light-yellow",
+                "value": 1
+              },
               {
-                "color": "purple",
-                "value": null
+                "color": "#EAB839",
+                "value": 3
+              },
+              {
+                "color": "dark-red",
+                "value": 5
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "total"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 5000
+                    },
+                    {
+                      "color": "green",
+                      "value": 10000
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 50000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 100000
+                    }
+                  ]
+                }
               }
             ]
           },
-          "unit": "percent"
-        },
-        "overrides": []
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "discountedTotal"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 2500
+                    },
+                    {
+                      "color": "green",
+                      "value": 5000
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 50000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 100000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Global Customer Discount (%)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 5
+        "h": 5,
+        "w": 4,
+        "x": 12,
+        "y": 0
       },
-      "hideTimeOverride": true,
-      "id": 18,
-      "interval": "10m",
-      "maxDataPoints": 1,
+      "id": 9,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
-        "orientation": "auto",
+        "orientation": "vertical",
         "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "count"
           ],
           "fields": "",
           "values": false
         },
         "showPercentChange": false,
-        "text": {},
-        "textMode": "value",
+        "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.4.0-20140193743",
       "targets": [
         {
+          "columns": [],
+          "computed_columns": [],
           "datasource": {
-            "uid": "$datasource"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdktck0gfh4hse"
           },
-          "expr": "sum(count_over_time(({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} |= \"Googlebot\")[$__interval])) / (sum(count_over_time(({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} != \"Googlebot\")[$__interval])) / 100)",
-          "instant": true,
-          "legendFormat": "",
-          "range": false,
-          "refId": "A"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "groq": "*",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "$.products[stock < 5].{\n  \"title\": title,\n  \"stock\": stock\n}",
+          "source": "url",
+          "summarizeBy": "",
+          "summarizeExpression": "",
+          "type": "json",
+          "uql": "parse-json\n| scope \"products\"\n| project \"title\", \"stock\"",
+          "url": "https://dummyjson.com/products",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
         }
       ],
-      "timeFrom": "1h",
-      "title": "% of requests by Googlebot",
+      "title": "Number of Products low in Stock",
+      "transparent": true,
       "type": "stat"
     },
     {
       "datasource": {
-        "uid": "$datasource"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "bdktck0gfh4hse"
       },
-      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 80
+              },
+              {
+                "color": "dark-red",
+                "value": 100
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "total"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 5000
+                    },
+                    {
+                      "color": "green",
+                      "value": 10000
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 50000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 100000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "discountedTotal"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 2500
+                    },
+                    {
+                      "color": "green",
+                      "value": 5000
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 50000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 100000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Global Customer Discount (%)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 19,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20140193743",
+      "targets": [
+        {
+          "columns": [],
+          "computed_columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdktck0gfh4hse"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "groq": "*",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "$.products[reviews[rating =1]].{\n  \"title\": title,\n  \"rating\": rating\n}",
+          "source": "url",
+          "summarizeBy": "",
+          "summarizeExpression": "",
+          "type": "json",
+          "uql": "parse-json\n| scope \"products\"\n| project \"title\", \"stock\"",
+          "url": "https://dummyjson.com/products",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "⭐★★★★ Review count",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "bdktck0gfh4hse"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 2.75
+              },
+              {
+                "color": "yellow",
+                "value": 3
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "total"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 5000
+                    },
+                    {
+                      "color": "green",
+                      "value": 10000
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 50000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 100000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "unit price ($)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 11,
+        "x": 0,
+        "y": 5
+      },
+      "id": 3,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.4.0-20140193743",
+      "targets": [
+        {
+          "columns": [],
+          "computed_columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdktck0gfh4hse"
+          },
+          "filterExpression": "rating < 3.25",
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "groq": "*",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "products.\n{\n  \"title\": title,\n  \"rating\": rating\n}",
+          "source": "url",
+          "summarizeBy": "",
+          "summarizeExpression": "",
+          "type": "json",
+          "uql": "parse-json\n| scope \"products\"\n| project \"category\", \"title\", \"stock\", \"rating\"\n| where category == \"beauty\"\n",
+          "url": "https://dummyjson.com/products",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Products with Ratings below 3.25",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "field": "rating"
+              }
+            ]
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "bdktck0gfh4hse"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 2
+              },
+              {
+                "color": "dark-green",
+                "value": 3.8
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "total"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 5000
+                    },
+                    {
+                      "color": "green",
+                      "value": 10000
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 50000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 100000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "unit price ($)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 5
+      },
+      "id": 2,
+      "options": {
+        "displayMode": "lcd",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "12.4.0-20140193743",
+      "targets": [
+        {
+          "columns": [],
+          "computed_columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdktck0gfh4hse"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "groq": "*",
+          "parser": "uql",
+          "refId": "A",
+          "root_selector": "carts\n{\n  \"total\": $sum(carts.total),\n  \"discountedTotal\": $sum(carts.discountedTotal),\n  \"totalProducts\": $sum(carts.totalProducts),\n  \"totalQuantity\": $sum(carts.totalQuantity)\n}",
+          "source": "url",
+          "summarizeBy": "",
+          "summarizeExpression": "",
+          "type": "json",
+          "uql": "parse-json\n| scope \"products\"\n| project \"category\", \"title\", \"stock\", \"rating\"\n",
+          "url": "https://dummyjson.com/products",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Product Ratings by Category",
+      "transformations": [
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "category": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "rating": {
+                "aggregations": [
+                  "mean"
+                ],
+                "operation": "aggregate"
+              },
+              "title": {
+                "aggregations": [],
+                "operation": "aggregate"
+              }
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "rating (mean)"
+              }
+            ]
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "bdktck0gfh4hse"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -637,16 +1256,12 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#96D98D",
-                "value": null
+                "color": "green",
+                "value": 0
               },
               {
-                "color": "#73BF69",
-                "value": 5
-              },
-              {
-                "color": "#56A64B",
-                "value": 10
+                "color": "red",
+                "value": 80
               }
             ]
           }
@@ -654,24 +1269,26 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 11,
-        "w": 12,
+        "h": 15,
+        "w": 10,
         "x": 0,
-        "y": 9
+        "y": 14
       },
-      "id": 14,
-      "maxDataPoints": 1,
+      "id": 4,
       "options": {
         "basemap": {
           "config": {
-            "server": "streets"
+            "server": "usa-topo"
           },
+          "layer-tooltip": true,
           "name": "Layer 0",
+          "noRepeat": false,
+          "opacity": 1,
           "type": "esri-xyz"
         },
         "controls": {
-          "mouseWheelZoom": false,
-          "showAttribution": true,
+          "mouseWheelZoom": true,
+          "showAttribution": false,
           "showDebug": false,
           "showMeasure": false,
           "showScale": false,
@@ -680,35 +1297,56 @@
         "layers": [
           {
             "config": {
-              "color": {
-                "fixed": "semi-dark-blue"
-              },
-              "fillOpacity": 0.3,
-              "shape": "circle",
-              "showLegend": true,
-              "size": {
-                "field": "Value",
-                "fixed": 5,
-                "max": 50,
-                "min": 10
-              },
+              "showLegend": false,
               "style": {
                 "color": {
-                  "fixed": "purple"
+                  "fixed": "#040c01"
+                },
+                "opacity": 1,
+                "rotation": {
+                  "fixed": 0,
+                  "max": 360,
+                  "min": -360,
+                  "mode": "mod"
                 },
                 "size": {
-                  "field": "Total",
-                  "fixed": 5,
-                  "max": 40,
-                  "min": 10
+                  "fixed": 8,
+                  "max": 15,
+                  "min": 2
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/star.svg",
+                  "mode": "fixed"
+                },
+                "symbolAlign": {
+                  "horizontal": "center",
+                  "vertical": "center"
+                },
+                "text": {
+                  "field": "username {name=\"A\"}",
+                  "fixed": "",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
                 }
               }
             },
-            "location": {
-              "lookup": "Field",
-              "mode": "lookup"
+            "filterData": {
+              "id": "byRefId",
+              "options": "joinByField-A-B"
             },
-            "name": "Layer 1",
+            "location": {
+              "latitude": "lat",
+              "longitude": "lng",
+              "mode": "coords"
+            },
+            "name": "Customer",
+            "tooltip": true,
             "type": "markers"
           }
         ],
@@ -717,1411 +1355,537 @@
         },
         "view": {
           "allLayers": true,
-          "id": "zero",
-          "lat": 0,
-          "lon": 0,
-          "zoom": 2
+          "id": "coords",
+          "lat": 40.337764,
+          "lon": -91.959968,
+          "noRepeat": false,
+          "zoom": 4.12
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "12.4.0-20140193743",
       "targets": [
         {
+          "columns": [],
+          "computed_columns": [],
           "datasource": {
-            "uid": "$datasource"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdktck0gfh4hse"
           },
-          "expr": "sum by (geoip_country_code) (count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json | geoip_country_code != \"\" | __error__=\"\" [$__interval]))",
-          "instant": false,
-          "legendFormat": "{{geoip_country_code}}",
-          "range": true,
-          "refId": "A"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "groq": "*",
+          "parser": "jq-backend",
+          "refId": "A",
+          "root_selector": ".users[]\n| {\n    firstName: .firstName,\n    lastName: .lastName,\n    username: .username,\n    street: .address.address,\n    state: .address.state\n  }",
+          "source": "url",
+          "summarizeBy": "",
+          "summarizeExpression": "",
+          "type": "json",
+          "uql": "parse-json\n| scope \"users\"\n| project  \"firstName\",\"lastName\",\"username\",\"address.coordinates.lat\"",
+          "url": "https://dummyjson.com/users",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        },
+        {
+          "columns": [],
+          "data": "[\n  { \"state\": \"Mississippi\", \"lat\": 32.741646, \"lng\": -89.678696 },\n  { \"state\": \"Alabama\", \"lat\": 32.806671, \"lng\": -86.791130 },\n  { \"state\": \"Alabama\", \"lat\": 32.806671, \"lng\": -86.791130 },\n  { \"state\": \"Pennsylvania\", \"lat\": 40.590752, \"lng\": -77.209755 },\n  { \"state\": \"Colorado\", \"lat\": 39.059811, \"lng\": -105.311104 },\n  { \"state\": \"Tennessee\", \"lat\": 35.747845, \"lng\": -86.692345 },\n  { \"state\": \"Delaware\", \"lat\": 39.318523, \"lng\": -75.507141 },\n  { \"state\": \"Rhode Island\", \"lat\": 41.680893, \"lng\": -71.511780 },\n  { \"state\": \"Louisiana\", \"lat\": 31.169546, \"lng\": -91.867805 },\n  { \"state\": \"Utah\", \"lat\": 40.150032, \"lng\": -111.862434 },\n  { \"state\": \"South Dakota\", \"lat\": 44.299782, \"lng\": -99.438828 },\n  { \"state\": \"West Virginia\", \"lat\": 38.491226, \"lng\": -80.954453 },\n  { \"state\": \"North Dakota\", \"lat\": 47.528912, \"lng\": -99.784012 },\n  { \"state\": \"Ohio\", \"lat\": 40.388783, \"lng\": -82.764915 },\n  { \"state\": \"Utah\", \"lat\": 40.150032, \"lng\": -111.862434 },\n  { \"state\": \"Iowa\", \"lat\": 42.011539, \"lng\": -93.210526 },\n  { \"state\": \"Wyoming\", \"lat\": 42.755966, \"lng\": -107.302490 },\n  { \"state\": \"Arkansas\", \"lat\": 34.969704, \"lng\": -92.373123 },\n  { \"state\": \"New Mexico\", \"lat\": 34.840515, \"lng\": -106.248482 },\n  { \"state\": \"Arkansas\", \"lat\": 34.969704, \"lng\": -92.373123 },\n  { \"state\": \"New Jersey\", \"lat\": 40.298904, \"lng\": -74.521011 },\n  { \"state\": \"Illinois\", \"lat\": 40.349457, \"lng\": -88.986137 },\n  { \"state\": \"New Jersey\", \"lat\": 40.298904, \"lng\": -74.521011 },\n  { \"state\": \"Missouri\", \"lat\": 38.456085, \"lng\": -92.288368 },\n  { \"state\": \"New York\", \"lat\": 42.165726, \"lng\": -74.948051 },\n  { \"state\": \"Maine\", \"lat\": 44.693947, \"lng\": -69.381927 },\n  { \"state\": \"Nevada\", \"lat\": 38.313515, \"lng\": -117.055374 },\n  { \"state\": \"Massachusetts\", \"lat\": 42.230171, \"lng\": -71.530106 },\n  { \"state\": \"Delaware\", \"lat\": 39.318523, \"lng\": -75.507141 },\n  { \"state\": \"Montana\", \"lat\": 46.921925, \"lng\": -110.454353 }\n]",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdktck0gfh4hse"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "jq-backend",
+          "refId": "B",
+          "root_selector": "",
+          "source": "inline",
+          "type": "json",
+          "uql": "parse-json",
+          "url": "",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
         }
       ],
-      "title": "Requests per Country",
+      "title": "US Customer Traffic by Geolocation",
       "transformations": [
         {
-          "id": "reduce",
+          "id": "joinByField",
           "options": {
-            "reducers": [
-              "sum"
-            ]
-          }
-        }
-      ],
-      "type": "geomap"
-    },
-    {
-      "datasource": {
-        "uid": "$datasource"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "continuous-BlPu"
-          },
-          "custom": {
-            "align": "center",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": false,
-            "inspect": false
-          },
-          "mappings": [
-            {
-              "options": {
-                "CN": {
-                  "color": "transparent",
-                  "index": 4,
-                  "text": "🇨🇳 CN"
-                },
-                "DE": {
-                  "color": "transparent",
-                  "index": 2,
-                  "text": "🇩🇪 DE"
-                },
-                "FR": {
-                  "color": "transparent",
-                  "index": 3,
-                  "text": "🇫🇷 FR"
-                },
-                "GB": {
-                  "color": "transparent",
-                  "index": 7,
-                  "text": "🇬🇧 GB"
-                },
-                "IN": {
-                  "color": "transparent",
-                  "index": 5,
-                  "text": "🇮🇳 IN"
-                },
-                "IT": {
-                  "color": "transparent",
-                  "index": 6,
-                  "text": "🇮🇹 IT"
-                },
-                "NL": {
-                  "color": "transparent",
-                  "index": 1,
-                  "text": "🇳🇱 NL"
-                },
-                "US": {
-                  "color": "transparent",
-                  "index": 0,
-                  "text": "🇺🇸 US"
-                }
-              },
-              "type": "value"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "transparent",
-                "value": null
-              }
-            ]
+            "byField": "state",
+            "mode": "outerTabular"
           }
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 3,
-        "x": 12,
-        "y": 9
-      },
-      "hideTimeOverride": true,
-      "id": 32,
-      "maxDataPoints": 1,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": false,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Requests"
-          }
-        ]
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "expr": "topk(10, sum by (geoip_country_code) (count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json | geoip_country_code != \"\" and  __error__=\"\" [$__interval])))",
-          "instant": true,
-          "legendFormat": "{{remote_addr}}",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "timeFrom": "15m",
-      "title": "Top Countries",
-      "transformations": [
         {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "Field": false,
-              "Time": true,
-              "Value #A": true
+              "lat B": false,
+              "lat {name=\"B\"}": false,
+              "lng {name=\"B\"}": false,
+              "state": true
             },
+            "includeByName": {},
             "indexByName": {
-              "Time": 0,
-              "Value #A": 3,
-              "geoip_country_code": 2,
-              "remote_addr": 1
+              "firstName {name=\"A\"}": 1,
+              "lastName {name=\"A\"}": 2,
+              "lat {name=\"B\"}": 5,
+              "lng {name=\"B\"}": 6,
+              "state": 4,
+              "street {name=\"A\"}": 3,
+              "username {name=\"A\"}": 0
             },
+            "orderBy": [
+              {
+                "desc": true,
+                "type": "name"
+              },
+              {
+                "desc": false,
+                "name": "name",
+                "type": "label"
+              }
+            ],
+            "orderByMode": "auto",
             "renameByName": {
-              "Field": "IP Address",
-              "Total": "Requests",
-              "Value #A": "Requests",
-              "geoip_country_code": "Country",
-              "remote_addr": "IP Address "
+              "firstName A": "first",
+              "firstName {name=\"A\"}": "first name",
+              "lastName A": "last",
+              "lastName {name=\"A\"}": "last name",
+              "lat B": "latitude",
+              "lat {name=\"B\"}": "latitude",
+              "lng B": "longitude",
+              "lng {name=\"B\"}": "longitude",
+              "state": "state",
+              "street A": "street",
+              "street {name=\"A\"}": "street",
+              "username A": "username",
+              "username {name=\"A\"}": "username"
             }
           }
         }
       ],
-      "type": "table"
+      "transparent": true,
+      "type": "geomap"
     },
     {
       "datasource": {
-        "uid": "$datasource"
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "bdktck0gfh4hse"
       },
-      "description": "",
       "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 11,
-        "w": 9,
-        "x": 15,
-        "y": 9
-      },
-      "id": 11,
-      "options": {
-        "dedupStrategy": "signature",
-        "enableLogDetails": false,
-        "prettifyLogMessage": false,
-        "showCommonLabels": false,
-        "showLabels": false,
-        "showTime": false,
-        "sortOrder": "Descending",
-        "wrapLogMessage": false
-      },
-      "pluginVersion": "11.4.0",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "$datasource"
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
-          "expr": "{$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json | line_format \"➡️ {{.request_method}} {{.request_uri}} with HTTP status: {{.status}} \"",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "title": "Recent requests",
-      "type": "logs"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 20
-      },
-      "id": 26,
-      "panels": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 100,
-                "gradientMode": "hue",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "log": 2,
-                  "type": "log"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "area"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "#EAB839",
-                    "value": 0.2
-                  },
-                  {
-                    "color": "red",
-                    "value": 0.3
-                  }
-                ]
-              },
-              "unit": "s"
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
             },
-            "overrides": [
+            "footer": {
+              "reducers": []
+            },
+            "hideFrom": {
+              "viz": false
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
               {
-                "matcher": {
-                  "id": "byName",
-                  "options": "95th percentile"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "blue",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
+                "color": "green",
+                "value": 0
               },
               {
-                "matcher": {
-                  "id": "byName",
-                  "options": "max latency"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "super-light-blue",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "max latency"
-                },
-                "properties": [
-                  {
-                    "id": "custom.fillOpacity",
-                    "value": 30
-                  }
-                ]
+                "color": "red",
+                "value": 80
               }
             ]
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 8,
-            "x": 0,
-            "y": 40
-          },
-          "id": 16,
-          "maxDataPoints": 50,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "11.4.0",
-          "targets": [
-            {
-              "datasource": {
-                "uid": "$datasource"
-              },
-              "expr": "quantile_over_time(0.95,{$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json | unwrap request_time |  __error__=\"\"  [$__interval]) by (host)",
-              "legendFormat": "95th percentile",
-              "refId": "C"
-            },
-            {
-              "datasource": {
-                "uid": "$datasource"
-              },
-              "expr": "max by (host) (max_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json | unwrap request_time |  __error__=\"\"  [$__interval]))",
-              "legendFormat": "max latency",
-              "refId": "D"
-            }
-          ],
-          "title": "95th percentile of Request Time",
-          "type": "timeseries"
+          }
         },
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 39,
-                "gradientMode": "hue",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "log": 2,
-                  "type": "log"
-                },
-                "showPoints": "never",
-                "spanNulls": true,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "decimals": 0,
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "short"
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "total"
             },
-            "overrides": [
+            "properties": [
               {
-                "matcher": {
-                  "id": "byName",
-                  "options": "HTTP Status 500"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "dark-orange",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
+                "id": "unit",
+                "value": "currencyUSD"
               },
               {
-                "matcher": {
-                  "id": "byName",
-                  "options": "{statuscode=\"200\"} 200"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "green",
-                      "mode": "fixed"
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": 0
+                    },
+                    {
+                      "color": "light-green",
+                      "value": 5000
+                    },
+                    {
+                      "color": "green",
+                      "value": 10000
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 50000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 100000
                     }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "{statuscode=\"404\"} 404"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "semi-dark-purple",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "{statuscode=\"500\"} 500"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "dark-red",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "HTTP Status 404"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "light-orange",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "HTTP Status 301"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "light-blue",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "HTTP Status 200"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "semi-dark-blue",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 8,
-            "x": 8,
-            "y": 40
-          },
-          "id": 2,
-          "maxDataPoints": 50,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "11.4.0",
-          "targets": [
-            {
-              "datasource": {
-                "uid": "$datasource"
-              },
-              "expr": "sum by (status) (count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json |  __error__=\"\" [$__interval]))",
-              "legendFormat": "HTTP Status {{status}}",
-              "refId": "A"
-            }
-          ],
-          "title": "HTTP status codes over time",
-          "transformations": [
-            {
-              "id": "filterFieldsByName",
-              "options": {
-                "include": {
-                  "names": [
-                    "Time",
-                    "HTTP Status 200",
-                    "HTTP Status 301",
-                    "HTTP Status 304",
-                    "HTTP Status 404",
-                    "HTTP Status 406",
-                    "HTTP Status 500"
                   ]
                 }
-              }
-            }
-          ],
-          "type": "timeseries"
-        },
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 100,
-                "gradientMode": "hue",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "smooth",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "decbytes"
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Bytes sent"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "light-blue",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
               },
               {
-                "matcher": {
-                  "id": "byName",
-                  "options": "appfelstrudel"
-                },
-                "properties": [
-                  {
-                    "id": "color",
-                    "value": {
-                      "fixedColor": "yellow",
-                      "mode": "fixed"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 9,
-            "w": 8,
-            "x": 16,
-            "y": 40
-          },
-          "id": 9,
-          "maxDataPoints": 50,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "11.4.0",
-          "targets": [
-            {
-              "datasource": {
-                "uid": "$datasource"
-              },
-              "expr": "sum by (host) (sum_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json | status=200 | unwrap body_bytes_sent |  __error__=\"\" [$__interval]))",
-              "legendFormat": "Bytes sent",
-              "refId": "A"
-            }
-          ],
-          "title": "Bytes Sent",
-          "type": "timeseries"
-        }
-      ],
-      "title": "Request statistics over time",
-      "type": "row"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 21
-      },
-      "id": 28,
-      "panels": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "filterable": false,
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Requests"
-                },
-                "properties": [
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "gauge"
-                    }
-                  },
-                  {
-                    "id": "color",
-                    "value": {
-                      "mode": "continuous-BlPu"
-                    }
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Requests"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 300
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 6,
-            "w": 9,
-            "x": 0,
-            "y": 50
-          },
-          "id": 6,
-          "maxDataPoints": 1,
-          "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Requests"
-              }
-            ]
-          },
-          "pluginVersion": "11.4.0",
-          "targets": [
-            {
-              "datasource": {
-                "uid": "$datasource"
-              },
-              "expr": "topk(10, sum by (http_referer) (count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json |  http_referer != \"\" and http_referer !~ \".*?$host.*?\" and http_referer !~ \".*?\\\\*\\\\*\\\\*.*?\" | __error__=\"\" [15m])))",
-              "instant": true,
-              "legendFormat": "{{http_referer}}",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "timeFrom": "15m",
-          "title": "Top 10 HTTP Referers",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true
-                },
-                "indexByName": {},
-                "renameByName": {
-                  "Field": "Referer",
-                  "Total": "Requests",
-                  "Value #A": "Requests",
-                  "http_referer": "HTTP Referrer"
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
                 }
               }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "filterable": false,
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Requests"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 300
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "gauge"
-                    }
-                  },
-                  {
-                    "id": "color",
-                    "value": {
-                      "mode": "continuous-BlPu"
-                    }
-                  }
-                ]
-              }
             ]
           },
-          "gridPos": {
-            "h": 6,
-            "w": 15,
-            "x": 9,
-            "y": 50
-          },
-          "id": 7,
-          "maxDataPoints": 1,
-          "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "discountedTotal"
             },
-            "showHeader": true,
-            "sortBy": [
+            "properties": [
               {
-                "desc": true,
-                "displayName": "Requests"
-              }
-            ]
-          },
-          "pluginVersion": "11.4.0",
-          "targets": [
-            {
-              "datasource": {
-                "uid": "$datasource"
+                "id": "unit",
+                "value": "currencyUSD"
               },
-              "expr": "topk(10, sum by (http_user_agent) (count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json |  __error__=\"\" [15m])))",
-              "instant": true,
-              "legendFormat": "{{http_user_agent}}",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "timeFrom": "15m",
-          "title": "Top 10 User Agents",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Field": false,
-                  "Time": true
-                },
-                "indexByName": {},
-                "renameByName": {
-                  "Field": "Agent",
-                  "Total": "Requests",
-                  "Value #A": "Requests",
-                  "http_user_agent": "User agent"
-                }
-              }
-            }
-          ],
-          "type": "table"
-        },
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "filterable": false,
-                "inspect": false
-              },
-              "mappings": [
-                {
-                  "options": {
-                    "NL": {
-                      "index": 1,
-                      "text": "🇳🇱"
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "super-light-green",
+                      "value": 0
                     },
-                    "US": {
-                      "index": 0,
-                      "text": "🇺🇸"
+                    {
+                      "color": "light-green",
+                      "value": 2500
+                    },
+                    {
+                      "color": "green",
+                      "value": 5000
+                    },
+                    {
+                      "color": "semi-dark-green",
+                      "value": 50000
+                    },
+                    {
+                      "color": "dark-green",
+                      "value": 100000
                     }
-                  },
-                  "type": "value"
+                  ]
                 }
-              ],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Requests"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 300
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "gauge"
-                    }
-                  },
-                  {
-                    "id": "color",
-                    "value": {
-                      "mode": "continuous-BlPu"
-                    }
-                  }
-                ]
               },
               {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Country"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 74
-                  }
-                ]
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
               }
             ]
           },
-          "gridPos": {
-            "h": 8,
-            "w": 9,
-            "x": 0,
-            "y": 56
-          },
-          "id": 3,
-          "maxDataPoints": 1,
-          "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Unit Price ($)"
             },
-            "showHeader": true,
-            "sortBy": [
+            "properties": [
               {
-                "desc": true,
-                "displayName": "Requests"
+                "id": "unit",
+                "value": "currencyUSD"
+              },
+              {
+                "id": "decimals",
+                "value": 2
               }
             ]
           },
-          "pluginVersion": "11.4.0",
-          "targets": [
-            {
-              "datasource": {
-                "uid": "$datasource"
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Customer Discount (%)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percentunit"
               },
-              "expr": "topk(10, sum by (remote_addr, geoip_country_code) (count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} | json |  __error__=\"\" [15m])))",
-              "instant": true,
-              "legendFormat": "{{remote_addr}}",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "timeFrom": "15m",
-          "title": "Top 10 visitor IPs",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Field": false,
-                  "Time": true
-                },
-                "indexByName": {
-                  "Time": 0,
-                  "Value #A": 3,
-                  "geoip_country_code": 2,
-                  "remote_addr": 1
-                },
-                "renameByName": {
-                  "Field": "IP Address",
-                  "Total": "Requests",
-                  "Value #A": "Requests",
-                  "geoip_country_code": "Country",
-                  "remote_addr": "IP Address "
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": 0
+                    },
+                    {
+                      "color": "#EAB839",
+                      "value": 0.1
+                    },
+                    {
+                      "color": "red",
+                      "value": 0.15
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
                 }
               }
-            }
-          ],
-          "type": "table"
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 12,
+        "x": 11,
+        "y": 14
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.4.0-20140193743",
+      "targets": [
+        {
+          "columns": [],
+          "computed_columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdktck0gfh4hse"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "groq": "*",
+          "parser": "uql",
+          "refId": "A",
+          "root_selector": "carts\n{\n  \"total\": $sum(carts.total),\n  \"discountedTotal\": $sum(carts.discountedTotal),\n  \"totalProducts\": $sum(carts.totalProducts),\n  \"totalQuantity\": $sum(carts.totalQuantity)\n}",
+          "source": "url",
+          "summarizeBy": "",
+          "summarizeExpression": "",
+          "type": "json",
+          "uql": "parse-json\n| scope \"carts\"\n| project \"id\", \"total\", \"discountedTotal\", \"totalQuantity\"\n",
+          "url": "https://dummyjson.com/carts",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
         },
         {
+          "columns": [],
           "datasource": {
-            "uid": "$datasource"
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "bdktck0gfh4hse"
           },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "filterable": false,
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": null
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Requests"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 300
-                  },
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "mode": "gradient",
-                      "type": "gauge"
-                    }
-                  },
-                  {
-                    "id": "color",
-                    "value": {
-                      "mode": "continuous-BlPu"
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 8,
-            "w": 15,
-            "x": 9,
-            "y": 56
-          },
-          "id": 12,
-          "maxDataPoints": 1,
-          "options": {
-            "cellHeight": "sm",
-            "footer": {
-              "countRows": false,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Requests"
-              }
-            ]
-          },
-          "pluginVersion": "11.4.0",
-          "targets": [
-            {
-              "datasource": {
-                "uid": "$datasource"
-              },
-              "expr": "topk(10, sum by (request_uri) (count_over_time({$label_name=~\"$label_value\", job=~\"$job\", instance=~\"$instance\"} !~ `\\.ico|\\.svg|\\.css|\\.png|\\.txt|\\.js|\\.xml` | json | status = 200 and request_uri != \"/\" | __error__=\"\" [15m])))",
-              "instant": true,
-              "legendFormat": "{{request_uri}}",
-              "range": false,
-              "refId": "A"
-            }
-          ],
-          "timeFrom": "15m",
-          "title": "Top 10 Requested Pages",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true
-                },
-                "indexByName": {},
-                "renameByName": {
-                  "Field": "Page",
-                  "Time": "",
-                  "Total": "",
-                  "Value #A": "Requests",
-                  "request_uri": "Path"
-                }
-              }
-            }
-          ],
-          "type": "table"
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "uql",
+          "refId": "B",
+          "root_selector": "parse-json\n| scope \"users\"\n| project \"userId\", \"username\"",
+          "source": "url",
+          "type": "json",
+          "uql": "parse-json\n| scope \"users\"\n| project \"id\", \"username\"",
+          "url": "https://dummyjson.com/users",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
         }
       ],
-      "title": "Acquisition and Behaviour",
-      "type": "row"
+      "title": "Customer Cart Analysis",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "id",
+            "mode": "inner"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "id": true,
+              "percentOfListPrice": true,
+              "total": false,
+              "totalQuantity A": false,
+              "userId": false
+            },
+            "includeByName": {},
+            "indexByName": {
+              "discountedTotal A": 3,
+              "id": 1,
+              "total A": 2,
+              "totalQuantity A": 4,
+              "username B": 0
+            },
+            "orderBy": [
+              {
+                "desc": false,
+                "name": "name",
+                "type": "label"
+              }
+            ],
+            "orderByMode": "manual",
+            "renameByName": {
+              "discountedTotal": "Customer Price Total ($)",
+              "discountedTotal A": "Customer Cost ($)",
+              "total": "List Price Total ($)",
+              "total A": "List Price Total ($)",
+              "totalQuantity": "Quantity of Items",
+              "totalQuantity A": "",
+              "unit price ($)": "Unit Price ($)",
+              "userId": "Customer ID",
+              "username B": "Customer"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Unit Price ($)",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Customer Cost ($)"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "totalQuantity A"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "percentOfListPrice",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Customer Cost ($)"
+                }
+              },
+              "operator": "/",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "List Price Total ($)"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Customer Discount (%)",
+            "binary": {
+              "left": {
+                "fixed": "1"
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "percentOfListPrice"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "percentOfListPrice": true,
+              "totalQuantity A": true
+            },
+            "includeByName": {},
+            "indexByName": {},
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "Customer Discount (%)"
+              }
+            ]
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
     }
   ],
   "preload": false,
-  "refresh": "",
-  "schemaVersion": 40,
-  "tags": [
-    "loki",
-    "ds-example"
-  ],
+  "schemaVersion": 42,
+  "tags": [],
   "templating": {
-    "list": [
-      {
-        "current": {
-          "text": "LokiNginxLogs",
-          "value": "P42BF267576A477F0"
-        },
-        "includeAll": false,
-        "label": "Datasource",
-        "name": "datasource",
-        "options": [],
-        "query": "loki",
-        "refresh": 1,
-        "regex": "",
-        "type": "datasource"
-      },
-      {
-        "current": {
-          "text": "agent",
-          "value": "agent"
-        },
-        "datasource": {
-          "type": "loki",
-          "uid": "$datasource"
-        },
-        "definition": "label_names()",
-        "includeAll": false,
-        "label": "Label Name",
-        "name": "label_name",
-        "options": [],
-        "query": "label_names()",
-        "refresh": 2,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "loki",
-          "uid": "$datasource"
-        },
-        "definition": "label_values($label_name)",
-        "includeAll": true,
-        "label": "Label Value",
-        "multi": true,
-        "name": "label_value",
-        "options": [],
-        "query": "label_values($label_name)",
-        "refresh": 2,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "allValue": ".*",
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "loki",
-          "uid": "$datasource"
-        },
-        "definition": "label_values({$label_name=~\"$label_value\"}, job)",
-        "includeAll": true,
-        "label": "Job",
-        "multi": true,
-        "name": "job",
-        "options": [],
-        "query": "label_values({$label_name=~\"$label_value\"}, job)",
-        "refresh": 2,
-        "regex": "",
-        "type": "query"
-      },
-      {
-        "allValue": ".*",
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "loki",
-          "uid": "$datasource"
-        },
-        "definition": "",
-        "includeAll": true,
-        "label": "Instance",
-        "multi": true,
-        "name": "instance",
-        "options": [],
-        "query": {
-          "label": "host",
-          "refId": "LokiVariableQueryEditor-VariableQuery",
-          "stream": "{$label_name=~\"$label_value\"}",
-          "type": 1
-        },
-        "refresh": 2,
-        "regex": "",
-        "type": "query"
-      }
-    ]
+    "list": []
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
-  "timepicker": {
-    "refresh_intervals": [
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ]
-  },
-  "timezone": "",
-  "title": "Loki NGINX Service Mesh - JSON version",
-  "uid": "T512JVH7z",
-  "version": 4,
-  "weekStart": ""
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "Marketing Dashboard",
+  "uid": "midsjqc",
+  "version": 31,
+  "weekStart": "",
+  "id": null
 }

@@ -1,6 +1,6 @@
 # Data Source Permissions for Marketing Team
 resource "grafana_data_source_permission" "marketing_datasrc_permissions" {
-  datasource_uid = grafana_data_source.NGINX.uid
+  datasource_uid = grafana_data_source.infinity.uid
   permissions {
     team_id    = grafana_team.marketing_team.id
     permission = "Query"
