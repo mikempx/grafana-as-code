@@ -18,10 +18,6 @@ resource "grafana_dashboard" "marketing_dashboard" {
   # Place it inside a folder; see resource below
   folder = grafana_folder.Marketingcollection.id
 }
-resource "grafana_dashboard" "app1" {
-  config_json = file("app1.json")
-  folder = grafana_folder.Marketingcollection.id
-}
 // Add a Finance dashboard to the Finance folder
 resource "grafana_dashboard" "finance_dashboard" {
   config_json = file("financedash.json")
