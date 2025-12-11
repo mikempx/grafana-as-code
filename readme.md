@@ -20,7 +20,7 @@ Access to all of these elements depends upon the user's access rights. When a us
 
 # Prerequisites
 
-There are 7 prerequisites for this setup. You only need to perform these pre-requisites once.
+There are 9 prerequisites for this setup. You only need to perform these pre-requisites once.
 
 1. Install Grafana's latest [Terraform provider](https://github.com/grafana/terraform-provider-grafana/releases).
 
@@ -37,6 +37,10 @@ There are 7 prerequisites for this setup. You only need to perform these pre-req
 6. **Create your OKTA environment**. Details in the [OKTA Details](https://github.com/mikempx/grafana-as-code/blob/main/readme.md#okta-details) section below. You will be surprised how easy it is to configure OKTA for the first time.
 
 7. Set up SAML SSO on your stack (Administration...Authentication...SAML) . Details in the "More Details" section below.
+
+8. In your Grafana Cloud environment, you need to enable the "🍕QuickPizza SRE Demo".  Go to "More Apps" > "Demo Data Dashboards" > "Install Dashboards".  It is required for our Label-Based Access Control to work as the datasource, `grafanacloud-demoinfra-prom` will be added to your Grafana Cloud instance.
+
+9. You will need to install the Infinity plugin to your your Grafana Cloud environment.  Go to "Administration" > "Plugins and Data" > "Plugins". Search for `Infinity` and then click `Install`.
 
 ## Possible Scenario
 Details on the possible scenario are explained in the [More Details](https://github.com/mikempx/grafana-as-code/blob/main/readme.md#potential-talk-track) section, but can be summarized in the following picture.
@@ -237,17 +241,19 @@ That's it! Your Grafana Cloud instance is now configured with SSO and you can pe
 # More Details
 
 ## Familiarize yourself with the different Terraform (tf) files. cd to grafana-as-code directory and use it as your working directory. A description of the files:
-* `provider.tf`: defines (a) the minimum provider version of 4.1.4 and connectivity settings to your Grafana instance.
-EDIT THIS FILE with your Service Account token and your new Grafana URL.
+* `provider.tf`: defines (a) the minimum provider version of 4.1.4 and connectivity settings to your Grafana instance.  EDIT THIS FILE with your Service Account token and your new Grafana URL.
 * `alerts_billing.tf`: defines 4 alerts, 3 of which are in a "Paused" state. In your demo, you may want to modify this file, enable all alerts, and "terraform apply"
+* `alerts_finance.tf` and `alerts_marketing.tf`: Dummy alerts created for their respective teams.
 * `apply_folder_permissions.tf`: imports our 3 dashboards into 3 newly created folders and applies Team access rights to them. Also of note that we remove the generic "View All" access to the folder so that only users with proper access can see dashboards in these folders.
 * `change_access_to_grafana_cloud_folder.tf`: removes the generic "View All" access to the folder
-* `datasource_perms.tf`: provides query access to only the Marketing team for NGINX/Loki logs and only the Finance team to the TestData datasource.
-* `datasourceloki.tf`, `datasourceprometheus.tf`, `datasourcetestdata.tf`: Adds our Prometheus and Loki 101 classroom instances as datasources, and adds a generic TestData datasource as well. Each one is configured differently depending upon credentials.
+* `datasource_perms.tf`: provides query access to only the Marketing team to see Marketing data (from the Infinity datasource) and only the Finance team to the TestData datasource.
+* `datasourceinfinity.tf`, `datasourceprometheus.tf`, `datasourcetestdata.tf`: Adds our Prometheus 101 classroom instances as datasources, and adds generic TestData and Infinity datasources as well. Each one is configured differently depending upon credentials.
 * `financedash.json`, `itdash.json`, `marketingdash.json`: Our 3 dashboards.
+* `lbac.tf`: Applies a label-based access control rule to our Prometheus datasource, restricting access to what the Finance team can see.  Administrators and the Finance team will see different results in the `Web Site Latency by Data Center (ms)` graph on the Finance KPIs dashboard in particular.
 * `notif.tf`: Adds a contact point (email); a mute timing (monday); and a notification policy tree referencing the contact point and mute timing. 
 * `teams.tf`: This creates your user teams and applies the LDAP groups to the teams as an External Group Sync.
-* `userrbac.tf`: Defines custom user roles. 
+* `userrbac.tf`: Defines custom user roles.
+
 
 
 ## Possible Scenario
