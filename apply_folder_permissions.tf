@@ -10,6 +10,7 @@ resource "grafana_folder" "Financecollection" {
 // Add a Marketing folder
 resource "grafana_folder" "Marketingcollection" {
   title = "MARKETING's automated folder"
+  uid = "rbac-marketing-example-v1"
 }
 
 // Add our MARKETING dashboards to the Marketing folder
